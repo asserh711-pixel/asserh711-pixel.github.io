@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mariomty's Day</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap'); /* خط كيرسبي رايق زي الصورة */
+
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .cursive-title {
+            font-family: 'Sacramento', cursive;
+        }
+        
+        .glowing-btn {
+            transition: all 0.3s ease-in-out;
+        }
+        .glowing-btn:hover {
+            box-shadow: 0 0 15px rgba(255, 77, 136, 0.5);
+            transform: scale(1.03);
+        }
+
+        @keyframes floatTeddy {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+        .teddy-float {
+            animation: floatTeddy 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-[#fcf5f7] min-h-screen w-full flex flex-col items-center justify-center py-10 relative overflow-x-hidden">
+
+    <!-- قلوب خلفية ديكور خفيفة -->
+    <div class="absolute top-10 left-12 text-pink-200 text-2xl animate-pulse">❤</div>
+    <div class="absolute bottom-16 right-20 text-pink-200 text-xl animate-bounce">💕</div>
+
+    <!-- صفحة الصور بكروت أكبر وأوضح -->
+    <div class="text-center z-10 px-4 w-full max-w-6xl">
+        
+        <!-- العنوان الرئيسي بخط رايق زي الصورة -->
+        <h2 class="cursive-title text-4xl md:text-6xl text-[#ff4d88] font-bold mb-2 tracking-wide">
+            Marioma's gallery
+        </h2>
+        <p class="text-black-400 font-bold text-xs md:text-sm font-medium mb-8">
+            Every moment with you is special and has a different flavor..
+        </p>
+
+        <!-- كارد خلفية شفاف يجمع كروت الصور -->
+        <div class="w-full bg-[#ffc0cb]/25 border border-pink-200 shadow-xl rounded-3xl p-6 md:p-10 relative flex flex-col items-center">
+            
+            <!-- دبدوب في الزاوية ديكور لطيف -->
+            <div class="absolute -top-7 right-8 text-3xl teddy-float z-20">
+                🧸
+            </div>
+
+            <!-- شبكة الصور (8 كروت بحجم كبير وبارز على 3 أعمدة) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 w-full mb-8">
+                
+                <!-- كارد 1 -->
+                <div class="bg-white border border-pink-100 p-4 rounded-3xl shadow-lg hover:scale-105 transition duration-300 flex flex-col items-center">
+                    <div class="w-full h-64 md:h-72 bg-pink-50 rounded-2xl overflow-hidden flex items-center justify-center border border-pink-100 mb-3 shadow-inner">
+                        <img src="M.1.jpg" alt="Memory 1" class="w-full h-full object-cover">
+                    </div>
+                    <p class="cubic-bezier text-xl text-[#ff4d88] font-bold mb-1">together forever</p>
+                    <span class="text-black-400 font-bold text-M">Home 🏡</span>
+                </div>
+
+                <!-- كارد 2 -->
+                <div class="bg-white border border-pink-100 p-4 rounded-3xl shadow-lg hover:scale-105 transition duration-300 flex flex-col items-center">
+                    <div class="w-full h-64 md:h-72 bg-pink-50 rounded-2xl overflow-hidden flex items-center justify-center border border-pink-100 mb-3 shadow-inner">
+                        <img src="M.2.jpg" alt="Memory 2" class="w-full h-full object-cover">
+                    </div>
+                    <p class="cursive-title text-2xl text-[#ff4d88] font-bold mb-1">My Fav Smile</p>
+                    <span class="text-black-400 font-bold text-M">B7bk ya My wife 😍</span>
+                </div>
+
+                <!-- كارد 3 -->
+                <div class="bg-white border border-pink-100 p-4 rounded-3xl shadow-lg hover:scale-105 transition duration-300 flex flex-col items-center">
+                    <div class="w-full h-64 md:h-72 bg-pink-50 rounded-2xl overflow-hidden flex items-center justify-center border border-pink-100 mb-3 shadow-inner">
+                        <img src="M.3.jpg" alt="Memory 3" class="w-full h-full object-cover">
+                    </div>
+                    <p class="cursive-title text-2xl text-[#ff4d88] font-bold mb-1">My Princess</p>
+                    <span class="text-black-400 font-bold text-M">Wonderful person always 🌸</span>
+                </div>
+
+                <!-- كارد 4 -->
+                <div class="bg-white border border-pink-100 p-4 rounded-3xl shadow-lg hover:scale-105 transition duration-300 flex flex-col items-center">
+                    <div class="w-full h-64 md:h-72 bg-pink-50 rounded-2xl overflow-hidden flex items-center justify-center border border-pink-100 mb-3 shadow-inner">
+                        <img src="M.4.jpg" alt="Memory 4" class="w-full h-full object-cover">
+                    </div>
+                    <p class="cursive-title text-2xl text-[#ff4d88] font-bold mb-1">حماده همبكااااا</p>
+                    <span class="text-Black-400 font-bold text-xl">😱ادي يكارفف</span>
+                </div>
+
+                <!-- كارد 5 -->
+                <div class="bg-white border border-pink-100 p-4 rounded-3xl shadow-lg hover:scale-105 transition duration-300 flex flex-col items-center">
+                    <div class="w-full h-64 md:h-72 bg-pink-50 rounded-2xl overflow-hidden flex items-center justify-center border border-pink-100 mb-3 shadow-inner">
+                        <img src="M.5.jpg" alt="Memory 5" class="w-full h-full object-cover">
+                    </div>
+                    <p class="cursive-title text-2xl text-[#ff4d88] font-bold mb-1">الشيف بتاعي </p>
+                    <span class="text-black-400 font-bold text-xl">😋زوجتي اللي هتغذيني </span>
+                </div>
+
+                <!-- كارد 6 -->
+                <div class="bg-white border border-pink-100 p-4 rounded-3xl shadow-lg hover:scale-105 transition duration-300 flex flex-col items-center">
+                    <div class="w-full h-64 md:h-72 bg-pink-50 rounded-2xl overflow-hidden flex items-center justify-center border border-pink-100 mb-3 shadow-inner">
+                        <img src="M.6.jpg" alt="Memory 6" class="w-full h-full object-cover">
+                    </div>
+                    <p class="cursive-title text-2xl text-[#ff4d88] font-bold mb-1">طبخ وغسيل كمان مش ممكن علي الحلاوه</p>
+                    <span class="text-black-400 font-bold text-xl">🤩ست بيت من يومك</span>
+                </div>
+
+                <!-- كارد 7 -->
+                <div class="bg-white border border-pink-100 p-4 rounded-3xl shadow-lg hover:scale-105 transition duration-300 flex flex-col items-center">
+                    <div class="w-full h-64 md:h-72 bg-pink-50 rounded-2xl overflow-hidden flex items-center justify-center border border-pink-100 mb-3 shadow-inner">
+                        <img src="M.7.jpg" alt="Memory 7" class="w-full h-full object-cover">
+                    </div>
+                    <p class="cursive-title text-2xl text-[#ff4d88] font-bold mb-1">قلب الاسد الاصلييي</p>
+                    <span class="text-black-400 font-bold text-xl">كلمه لكل الخنافس هل من منافس؟</span>
+                </div>
+
+                <!-- كارد 8 -->
+                <div class="bg-white border border-pink-100 p-4 rounded-3xl shadow-lg hover:scale-105 transition duration-300 flex flex-col items-center">
+                    <div class="w-full h-64 md:h-72 bg-pink-50 rounded-2xl overflow-hidden flex items-center justify-center border border-pink-100 mb-3 shadow-inner">
+                        <img src="M.8.jpg" alt="Memory 8" class="w-full h-full object-cover">
+                    </div>
+                    <p class="cursive-title text-2xl text-[#ff4d88] font-bold mb-1">هاكل بس اللقمه دي واكمل</p>
+                    <span class="text-black-400 font-bold text-xl">😮كوفتس خالص يعني </span>
+                </div>
+ <!--كرات 9 -->
+                <div class="bg-white border border-pink-100 p-4 rounded-3xl shadow-lg hover:scale-105 transition duration-300 flex flex-col items-center">
+                    <div class="w-full h-64 md:h-72 bg-pink-50 rounded-2xl overflow-hidden flex items-center justify-center border border-pink-100 mb-3 shadow-inner">
+                        <img src="M.9.jpg" alt="Memory 9" class="w-full h-full object-cover">
+                    </div>
+                    <p class="cursive-title text-2xl text-[#ff4d88] font-bold mb-1">الشخه حضرت</p>
+                    <span class="text-black-400 font-bold text-xl">🚽قمة الشياكه والاناقه</span>
+                
+                </div>
+        <!--كارت 10-->
+                <div class="bg-white border border-pink-100 p-4 rounded-3xl shadow-lg hover:scale-105 transition duration-300 flex flex-col items-center">
+                    <div class="w-full h-64 md:h-72 bg-pink-50 rounded-2xl overflow-hidden flex items-center justify-center border border-pink-100 mb-3 shadow-inner">
+                        <img src="M.10.jpg" alt="Memory 10" class="w-full h-full object-cover">
+                    </div>
+                    <p class="cursive-title text-2xl text-[#ff4d88] font-bold mb-1">النونو بتاعي</p>
+                    <span class="text-black-400 font-bold text-xl">احلي بنوته ف الدنيا والله</span>
+                </div>        
+
+                <!--كرات 11 -->
+                <div class="bg-white border border-pink-100 p-4 rounded-3xl shadow-lg hover:scale-105 transition duration-300 flex flex-col items-center">
+                    <div class="w-full h-64 md:h-72 bg-pink-50 rounded-2xl overflow-hidden flex items-center justify-center border border-pink-100 mb-3 shadow-inner">
+                        <img src="M.11.jpg" alt="Memory 11" class="w-full h-full object-cover">
+                    </div>
+                    <p class="cursive-title text-2xl text-[#ff4d88] font-bold mb-1">فارس الجن واحد بس ياه</p>
+                    <span class="text-black-400 font-bold text-xl">قلب الاسد الجزء 2</span>
+                </div>
+
+                  <!--كرات 12-->
+                <div class="bg-white border border-pink-100 p-4 rounded-3xl shadow-lg hover:scale-105 transition duration-300 flex flex-col items-center">
+                    <div class="w-full h-64 md:h-72 bg-pink-50 rounded-2xl overflow-hidden flex items-center justify-center border border-pink-100 mb-3 shadow-inner">
+                        <img src="M.12.jpg" alt="Memory 12" class="w-full h-full object-cover">
+                    </div>
+                    <p class="cursive-title text-2xl text-[#ff4d88] font-bold mb-1">مش عايز تتعرف عليا خالث</p>
+                    <span class="text-black-400 font-bold text-xl">🤨اتكلي علي الله يحببتي مفيش فكه</span>
+                </div>
+
+            </div>
+
+            <!-- زرار الرجوع للرسائل -->
+            <div class="w-full flex items-center justify-between border-t border-pink-200/60 pt-4 mt-2">
+                <a href="messages.html" class="glowing-btn inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#ff4d88] text-white font-medium text-xs md:text-sm shadow-sm cursor-pointer no-underline">
+                    <span>← Back to Messages</span> <span>💌</span>
+                </a>
+
+                <div class="text-xs text-gray-400 font-medium">
+                    Memories Gallery 📸
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

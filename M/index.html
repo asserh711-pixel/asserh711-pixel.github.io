@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mariomty's Day</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- مكتبة الـ Confetti عشان فرقعة عيد الميلاد -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .glowing-btn {
+            transition: all 0.3s ease-in-out;
+        }
+        .glowing-btn:hover {
+            box-shadow: 0 0 20px rgba(255, 77, 136, 1);
+            transform: scale(1.03);
+        }
+
+        /* حركة الاستيكر طالع ونازل باستمرار */
+        @keyframes floatTeddy {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        .teddy-float {
+            animation: floatTeddy 2s ease-in-out infinite;
+        }
+
+        /* أنيميشن ظهور شاشة الاحتفال */
+        @keyframes popUp {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .celebration-pop {
+            animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        /* إفكت اهتزاز الشاشة المضحك أول ما تضغط Enter */
+        @keyframes wackyShake {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            20% { transform: translate(-15px, 10px) rotate(-5deg); }
+            40% { transform: translate(15px, -10px) rotate(5deg); }
+            60% { transform: translate(-10px, -15px) rotate(-3deg); }
+            80% { transform: translate(10px, 15px) rotate(3deg); }
+            100% { transform: translate(0, 0) rotate(360deg) scale(0); opacity: 0; }
+        }
+        .funny-explosion {
+            animation: wackyShake 0.9s ease-in-out forwards;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col items-center justify-center relative overflow-hidden bg-black" style="background-image: url('M.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center;">
+
+    <!-- 1. نافذة تسجيل الدخول -->
+    <div id="loginOverlay" class="absolute inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center z-50 px-4 transition-all">
+        <div id="loginBox" class="text-center px-8 py-8 bg-black/70 rounded-3xl border border-white/25 shadow-2xl max-w-sm w-full">
+            <div id="loginEmoji" class="text-5xl mb-4 transition-transform">🔐</div>
+            <h1 class="text-2xl font-bold text-white mb-2">🤨هي وكاله من غير بواب </h1>
+            <p class="text-white text-M mb-6">✋🏻الباسورد تاريخ اول يوم اتكلمنا فيه</p> 
+                
+            <form onsubmit="handleLogin(event)" class="flex flex-col gap-4">
+                <input type="password" id="passInput" placeholder="Enter Password..." class="px-4 py-3 rounded-xl bg-white/10 border border-white/30 text-white placeholder-gray-400 text-center text-sm focus:outline-none focus:border-pink-400 transition" required autofocus>
+                
+                <button type="submit" class="glowing-btn w-full py-3 rounded-xl bg-[#ff4d88] text-white font-medium text-sm shadow-xl cursor-pointer border border-white/40">
+                    Unlock 🔓
+                </button>
+            </form>
+            <p id="errorMsg" class="text-white text-xl mt-3 hidden font-medium">😡😡😡😡😡😡😡😡😡غلط يعجله</p>
+        </div>
+    </div>
+
+    <!-- 2. شاشة الاحتفال -->
+    <div id="celebrationScreen" class="absolute inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-40 px-4 hidden">
+        <div class="celebration-pop text-center px-6 py-6 bg-black/75 rounded-3xl border border-pink-400/40 shadow-2xl max-w-md w-full flex flex-col items-center">
+            
+            <h2 class="text-xl font-bold text-white mb-1">👺اتمني تكوني افتكرتي ومسالتنيش</h2>
+
+            
+
+            <div class="teddy-float mb-5">
+                <img id="looping-gif" src="s.jpg" alt="Celebration Sticker" class="w-24 h-24 md:w-28 md:h-28 object-cover rounded-2xl border-2 border-white shadow-lg">
+            </div>
+
+            <button onclick="goToMainContent()" class="glowing-btn px-8 py-2.5 rounded-full bg-[#ff4d88] text-white font-medium text-sm shadow-xl cursor-pointer border border-white/60">
+                Enjoy ya ro7y😍
+            </button>
+        </div>
+    </div>
+
+    <!-- فروع زينة معلقة من الزوايا العليا -->
+    <div class="absolute top-0 left-0 flex items-start gap-1 p-3 text-2xl md:text-3xl pointer-events-none transform -rotate-12 origin-top-left z-20">
+        <span>🎀</span><span>✨</span><span>🎈</span><span>💖</span><span>🌸</span>
+    </div>
+    <div class="absolute top-0 right-0 flex items-start gap-1 p-3 text-2xl md:text-3xl pointer-events-none transform rotate-12 origin-top-right z-20">
+        <span>🌸</span><span>💖</span><span>🎈</span><span>✨</span><span>🎀</span>
+    </div>
+
+    <!-- قلوب خلفية ديكور -->
+    <div class="absolute top-10 left-12 text-pink-300 text-2xl animate-pulse z-20">❤</div>
+    <div class="absolute bottom-16 right-20 text-pink-300 text-xl animate-bounce z-20">💕</div>
+
+    <!-- 3. الواجهة الرئيسية للموقع (تم نزول المحتوى لتحت بمسافة مريحة) -->
+    <div id="mainContent" class="text-center z-20 px-6 py-8 max-w-2xl w-full opacity-0 pointer-events-none transition-opacity duration-700 hidden flex flex-col items-center mt-20 pt-10">
+        
+        <h1 class="text-2xl md:text-3xl font-bold text-white tracking-tight mb-3 whitespace-nowrap flex items-center justify-center gap-2 drop-shadow-[0_3px_6px_rgba(0,0,0,0.9)]">
+            Happy Birthday Mariomty <span class="text-2xl">💖</span>
+        </h1>
+
+        <p class="text-pink-100 text-xs md:text-sm font-medium mb-6 min-h-[40px] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] px-2">
+            <span id="typing-text" class="typing-cursor"></span> <span id="heart-icon" class="text-red-400 opacity-0 transition-opacity duration-300">❤️</span>
+        </p>
+
+        <a href="messages.html" class="glowing-btn inline-flex items-center gap-2 px-8 py-3 rounded-full bg-[#ff4d88] text-white font-medium text-xs md:text-sm shadow-2xl cursor-pointer border border-white/60 no-underline">
+            Click to Enter Our World <span>💞</span>
+        </a>
+
+        <div class="flex justify-center gap-2 mt-4 text-pink-300 text-xs drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">
+            <span>💕</span>
+            <span>❤</span>
+            <span>💕</span>
+        </div>
+    </div>
+
+    <script>
+        const correctPassword = "13/1/2026"; // الباسورد
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const inputVal = document.getElementById("passInput").value;
+            
+            if (inputVal === correctPassword) {
+                document.getElementById("loginEmoji").textContent = "🥳";
+                
+                const box = document.getElementById("loginBox");
+                box.classList.add("funny-explosion");
+
+                setTimeout(() => {
+                    document.getElementById("loginOverlay").style.display = "none";
+                    document.getElementById("celebrationScreen").classList.remove("hidden");
+                    setTimeout(typeCelebrationText, 300);
+                }, 850);
+
+            } else {
+                const error = document.getElementById("errorMsg");
+                error.classList.remove("hidden");
+                document.getElementById("passInput").value = "";
+            }
+        }
+
+        const celebrationMsg = "كل سنة وأنتي الطيبة وجزء جميل قوي من حياتي، يلا بينا ندخل ونشوف المفاجأة! ❤️";
+        const celebrationTypingEl = document.getElementById("celebration-typing");
+        let cIndex = 0;
+
+        function typeCelebrationText() {
+            if (cIndex < celebrationMsg.length) {
+                celebrationTypingEl.textContent += celebrationMsg.charAt(cIndex);
+                cIndex++;
+                setTimeout(typeCelebrationText, 40);
+            } else {
+                celebrationTypingEl.classList.remove("typing-cursor");
+            }
+        }
+
+        // دالة فرقعة الألعاب النارية والاحتفال عند الضغط على "Let's Go!"
+        function triggerFireworks() {
+            var duration = 2.5 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 999 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+
+        function goToMainContent() {
+            triggerFireworks();
+
+            const celebration = document.getElementById("celebrationScreen");
+            celebration.style.opacity = "0";
+            
+            setTimeout(() => {
+                celebration.style.display = "none";
+                const main = document.getElementById("mainContent");
+                main.classList.remove("hidden", "opacity-0", "pointer-events-none");
+                setTimeout(typeWriter, 300);
+            }, 500);
+        }
+
+        // كود تشغيل واستمرار الـ GIF لـ s.jpg بدون توقف
+        setInterval(() => {
+            const gif = document.getElementById("looping-gif");
+            if (gif) {
+                gif.src = "s.jpg?t=" + new Date().getTime();
+            }
+        }, 1300);
+
+        const introText = "In my eyes , You are The most beutiful woman in The World";
+        const typingElement = document.getElementById("typing-text");
+        const heartIcon = document.getElementById("heart-icon");
+        let i = 0;
+
+        function typeWriter() {
+            if (i < introText.length) {
+                typingElement.textContent += introText.charAt(i);
+                i++;
+                setTimeout(typeWriter, 50);
+            } else {
+                typingElement.classList.remove("typing-cursor");
+                heartIcon.classList.remove("opacity-0");
+            }
+        }
+    </script>
+</body>
+</html>

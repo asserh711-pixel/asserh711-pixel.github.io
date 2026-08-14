@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mariomty's Day</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fff0f3 0%, #ffd1dc 100%);
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        /* تأثير إضاءة الزرار */
+        .glowing-btn {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glowing-btn:hover {
+            box-shadow: 0 0 15px rgba(255, 77, 136, 0.5);
+            transform: scale(1.03);
+        }
+
+        /* حركة الدبدوب طالع ونازل */
+        @keyframes floatTeddy {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        .teddy-float {
+            animation: floatTeddy 2s ease-in-out infinite;
+        }
+        
+        .message-box {
+            transition: all 0.5s ease;
+        }
+
+        /* واقعية سلك اللمبة (سلك أسود مجدول مظلل) */
+        .realistic-cord {
+            width: 4px;
+            height: 160px;
+            background: linear-gradient(90deg, #111, #333, #111);
+            box-shadow: 2px 0 6px rgba(0,0,0,0.8);
+        }
+
+        /* غطاء اللمبة المعدني (Ceiling Rose & Shade) */
+        .lamp-shade {
+            background: radial-gradient(circle at 30% 30%, #4b5563, #1f2937);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.9);
+        }
+
+        /* حركة شد السلسلة الحقيقية للأبطال */
+        .pull-chain-container {
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+        .pull-chain-container:active {
+            transform: translateY(25px);
+        }
+
+        /* تأثير خرز السلسلة الواقعية */
+        .chain-beads {
+            background-image: radial-gradient(circle, #e5e7eb 50%, #9ca3af 50%);
+            background-size: 4px 8px;
+            background-repeat: repeat-y;
+        }
+    </style>
+</head>
+<body id="main-body" class="min-h-screen w-full flex items-center justify-center p-4 md:p-6 relative overflow-x-hidden opacity-100">
+
+    <!-- ==================== شاشة الإظلام والمصباح الواقعي (الإنترو) ==================== -->
+    <div id="light-overlay" class="fixed inset-0 bg-[#08080c] z-50 flex flex-col items-center justify-start transition-opacity duration-1000 overflow-hidden select-none">
+        
+        <!-- قاعدة السقف للمصباح -->
+        <div class="w-12 h-4 bg-gray-700 rounded-b-xl shadow-lg border-b border-gray-900"></div>
+
+        <!-- السلك الواقعي والمصباح -->
+        <div class="relative flex flex-col items-center">
+            <!-- سلك التوصيل الرئيسي -->
+            <div class="realistic-cord"></div>
+            
+            <!-- غطاء المصباح المعدني العلوي -->
+            <div class="lamp-shade w-28 h-12 rounded-t-full relative z-20 border-b-2 border-amber-500/50 flex justify-center">
+                <!-- الدواية (Holder) -->
+                <div class="w-6 h-4 bg-gray-900 absolute -bottom-3 rounded-b-md"></div>
+            </div>
+            
+            <!-- اللمبة -->
+            <div id="bulb" class="w-12 h-12 -mt-1 bg-gray-700 rounded-full transition-all duration-300 relative z-10 border border-gray-500 shadow-[inset_0_2px_4px_rgba(255,255,255,0.2)]"></div>
+            
+            <!-- هالة الضوء الواسعة -->
+            <div id="light-glow" class="absolute top-44 w-0 h-0 rounded-full bg-amber-300/0 blur-[100px] transition-all duration-700 pointer-events-none"></div>
+
+            <!-- سلسلة الشد الواقعية المتدلية بجانب المصباح -->
+            <div onclick="turnOnLight()" class="pull-chain-container absolute top-40 left-[calc(50%+18px)] flex flex-col items-center z-30 group">
+                <!-- خرز السلسلة الحقيقي -->
+                <div class="w-1.5 h-28 chain-beads shadow-md group-hover:brightness-125"></div>
+                <!-- حلقة نهاية السلسلة والمقبض المعدني -->
+                <div class="w-4 h-4 rounded-full border border-gray-300 bg-gray-400 flex items-center justify-center -mt-0.5"></div>
+                <div class="w-5 h-7 bg-gradient-to-b from-amber-300 to-amber-600 rounded-b-lg border border-amber-200 shadow-xl flex items-center justify-center animate-bounce mt-[-1px]">
+                    <span class="text-[9px] font-black text-amber-950">▼</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- نص إرشادي تحت اللمبة -->
+        <div id="hint-text" class="mt-24 text-pink-200/90 font-medium text-sm md:text-base tracking-wide animate-pulse flex items-center gap-2 bg-white/5 px-6 py-3 rounded-full border border-white/10 backdrop-blur-md shadow-2xl">
+            <span>🕵🏻‍♂️افتحي النور</span>
+        </div>
+    </div>
+    <!-- ========================================================================= -->
+
+
+    <!-- قلوب خلفية ديكور خفيفة -->
+    <div class="absolute top-10 left-12 text-pink-300 text-2xl animate-pulse">❤</div>
+    <div class="absolute bottom-16 right-20 text-pink-300 text-xl animate-bounce">💕</div>
+
+    <!-- الحاوية الرئيسية مقسومة 3 أجزاء -->
+    <div class="w-full max-w-6xl grid grid-cols-1 md:grid-cols-12 gap-5 items-center z-15">
+        
+        <!-- الجزء الشمال: الصورة الأولى (Ma.jpg) -->
+        <div class="md:col-span-3 w-full flex justify-center">
+            <div class="w-full max-w-[260px] h-[580px] rounded-3xl overflow-hidden border-4 border-white shadow-xl bg-white/50 relative">
+                <img src="Ma.jpg" alt="Gannah 1" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-pink-500/20 to-transparent pointer-events-none"></div>
+            </div>
+        </div>
+
+        <!-- الجزء اللي في النص: يحتوي على خلفية Mari.jpg بالطول وجواها الرسايل والزرار -->
+        <div class="md:col-span-6 w-full flex flex-col items-center text-center px-4 py-8 rounded-3xl border-4 border-white shadow-2xl relative overflow-hidden bg-cover bg-center" style="background-image: url('Mari.jpg'); height: 580px; justify-content: space-between;">
+            
+            <!-- طبقة تفتيح خفيفة فوق خلفية Mari عشان الكلام يبقوا واضحين وألوانها باينة -->
+            <div class="absolute inset-0 bg-black/25 pointer-events-none"></div>
+
+            <!-- المحتوى الداخلي فوق صورة Mari -->
+            <div class="relative z-20 w-full flex flex-col items-center">
+                <!-- الاستيكر المتحرك فوق الرسائل -->
+                <div class="teddy-float mb-2">
+                    <img id="looping-gif" src="teddy.jpg" alt="Cute Sticker" class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-2xl border-2 border-white shadow-md">
+                </div>
+
+                <!-- العنوان الصغير فوق -->
+                <div class="text-white font-bold text-lg md:text-xl mb-2 flex items-center justify-center gap-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                    <span>Happy Birthday ya batta </span> <span class="text-red-400 text-lg">🦆</span>
+                </div>
+            </div>
+
+            <!-- مكان ظهور المستطيلات بالترتيب -->
+            <div id="messages-container" class="w-full flex flex-col gap-2 relative z-20 my-auto">
+                <!-- المستطيلات هتظهر هنا ديناميكياً -->
+            </div>
+
+            <!-- زرار Click Here (في الأسفل، ويتحرك يمين وشمال مع كل ضغطة) -->
+            <div id="button-container" class="w-full flex justify-start relative z-20 transition-all duration-300">
+                <button onclick="handleButtonClick()" class="glowing-btn inline-flex items-center gap-1.5 px-6 py-2.5 rounded-xl bg-[#ff4d88] text-white font-medium text-xs md:text-sm shadow-md cursor-pointer border border-white/40">
+                    <span id="btn-text">Click Here..</span> <span id="btn-icon">💖</span>
+                </button>
+            </div>
+
+        </div>
+
+        <!-- الجزء اليمين: الصورة التانية (Mar.jpg) -->
+        <div class="md:col-span-3 w-full flex justify-center">
+            <div class="w-full max-w-[260px] h-[580px] rounded-3xl overflow-hidden border-4 border-white shadow-xl bg-white/50 relative">
+                <img src="Mar.jpg" alt="Gannah 2" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-pink-500/20 to-transparent pointer-events-none"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // دالة توليد صوت التكة (Click Sound) باستخدام Web Audio API بدون الحاجة لملفات خارجية
+        function playClickSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+
+                oscillator.type = 'triangle';
+                oscillator.frequency.setValueAtTime(400, audioCtx.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.05);
+
+                gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.05);
+            } catch (e) {
+                // لو المتصفح حظر التشغيل التلقائي مؤقتاً
+                console.log("Audio context prevented");
+            }
+        }
+
+        // دالة تشغيل المصباح الواقعي وكشف الصفحة
+        let isLightOn = false;
+        function turnOnLight() {
+            if (isLightOn) return;
+            isLightOn = true;
+
+            // تشغيل صوت التكة فوراً مع الشد
+            playClickSound();
+
+            const bulb = document.getElementById("bulb");
+            const glow = document.getElementById("light-glow");
+            const overlay = document.getElementById("light-overlay");
+            const hint = document.getElementById("hint-text");
+
+            // 1. إضاءة اللمبة بوهج أصفر قوي وواقعي
+            bulb.classList.remove("bg-gray-700");
+            bulb.classList.add("bg-amber-300", "shadow-[0_0_50px_#fde047,inset_0_0_10px_#ffffff]");
+
+            glow.style.width = "1000px";
+            glow.style.height = "1000px";
+            glow.style.top = "-200px";
+            glow.classList.remove("bg-amber-300/0");
+            glow.classList.add("bg-amber-100/40");
+
+            hint.style.opacity = "0";
+
+            // 2. تلاشي الشاشة المظلمة لفتح الصفحة بالكامل
+            setTimeout(() => {
+                overlay.classList.add("opacity-0", "pointer-events-none");
+            }, 450);
+        }
+
+        // تم تقليل الوقت إلى 1300 مللي ثانية عشان يعيد نفسه بسرعة قبل ما يقف
+        setInterval(() => {
+            const gif = document.getElementById("looping-gif");
+            if (gif) {
+                gif.src = "teddy.jpg?t=" + new Date().getTime();
+            }
+        }, 1300);
+
+        const messages = [
+            { text: "Wallpaper ملقتش احلي من عيونك احطها", icon: "❤️"},
+            { text: "30/12/2025 , The day that I was born", icon: "😍" },
+            { text: "سحرتيني من اول يوم شوفتك فيه", icon: "💕" },
+            { text: "Birthday ya battyyyy , b7bk awy ya nor 3eny", icon: "🎂" }
+        ];
+
+        let currentIndex = 0;
+        let isRight = false; // متغير لتحديد مكان الزرار (يمين أو شمال)
+        
+        const container = document.getElementById("messages-container");
+        const buttonContainer = document.getElementById("button-container");
+        const btnText = document.getElementById("btn-text");
+        const btnIcon = document.getElementById("btn-icon");
+
+        function handleButtonClick() {
+            // 1. تبديل مكان الزرار يمين وشمال مع كل ضغطة
+            isRight = !isRight;
+            if (isRight) {
+                buttonContainer.className = "w-full flex justify-end relative z-20 transition-all duration-300";
+            } else {
+                buttonContainer.className = "w-full flex justify-start relative z-20 transition-all duration-300";
+            }
+
+            // 2. إظهار الرسالة التالية أو الانتقال لصفحة الصور
+            if (currentIndex < messages.length) {
+                const msg = messages[currentIndex];
+                
+                // إنشاء مستطيل جديد
+                const box = document.createElement("div");
+                box.className = "message-box w-full bg-white/90 border border-pink-200 shadow-md rounded-2xl p-3 relative flex items-center justify-between text-left opacity-0 transform translate-y-4 backdrop-blur-sm";
+                
+                box.innerHTML = `
+                    <span class="text-gray-800 text-xs md:text-sm font-medium">${msg.text}</span>
+                    <span class="text-pink-500 text-sm ml-2">${msg.icon}</span>
+                `;
+
+                container.appendChild(box);
+
+                // تأثير ظهور ناعم
+                setTimeout(() => {
+                    box.classList.remove("opacity-0", "translate-y-4");
+                }, 50);
+
+                currentIndex++;
+
+                // لو خلصنا كل الرسائل، نغير شكل الزرار لمعرض الصور
+                if (currentIndex === messages.length) {
+                    btnText.textContent = "Our Memories";
+                    btnIcon.textContent = "📸";
+                }
+            } else {
+                // ترانزيشن تلاشي الصفحة قبل الانتقال لصفحة الصور
+                const mainBody = document.getElementById("main-body");
+                mainBody.style.opacity = "0";
+                
+                setTimeout(() => {
+                    window.location.href = "gallery.html";
+                }, 800);
+            }
+        }
+    </script>
+
+</body>
+</html>
