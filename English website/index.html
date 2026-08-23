@@ -11,106 +11,339 @@
   <style> 
     body { 
       font-family: 'Cairo', sans-serif; 
-      /* خلفية ممتدة على الموقع بالكامل */ 
       background-image: linear-gradient(rgba(248, 250, 252, 0.85), rgba(248, 250, 252, 0.9)), url('bg.jpg'); 
       background-size: cover; 
       background-position: center; 
-      background-attachment: fixed; /* يجعل الخلفية ثابتة أثناء التصفح */ 
+      background-attachment: fixed; 
+      transition: background 0.3s ease, color 0.3s ease;
     } 
+
+    /* تنسيقات الوضع الليلي */
+    body.dark-mode {
+      background-image: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95)), url('bg.jpg');
+      color: #f1f5f9;
+    }
+    body.dark-mode .bg-white\/95,
+    body.dark-mode .bg-white\/90,
+    body.dark-mode header {
+      background-color: rgba(30, 41, 59, 0.85) !important;
+      border-color: rgba(51, 65, 85, 0.6) !important;
+      color: #f1f5f9 !important;
+    }
+    body.dark-mode .text-gray-800,
+    body.dark-mode .text-gray-600 {
+      color: #cbd5e1 !important;
+    }
+    body.dark-mode .border-gray-100,
+    body.dark-mode .border-gray-200 {
+      border-color: #334155 !important;
+    }
+    body.dark-mode .bg-blue-50 {
+      background-color: rgba(30, 58, 138, 0.4) !important;
+      color: #93c5fd !important;
+      border-color: rgba(59, 130, 246, 0.3) !important;
+    }
+
+    /* تأثيرات ظهور سلسة (Smooth Modal Animations) */
+    #customModal {
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    #customModal > div {
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+      transform: scale(0.9);
+      opacity: 0;
+    }
+    #customModal:not(.hidden) > div {
+      transform: scale(1);
+      opacity: 1;
+    }
   </style> 
+
+  <!-- كود الحماية والتحقق من تسجيل الدخول -->
+  <script>
+    const isLogged = localStorage.getItem("isLoggedIn") === "true" || sessionStorage.getItem("isLoggedIn") === "true";
+    if (!isLogged) {
+      window.location.href = "login.html";
+    }
+
+    // دالة تسجيل الخروج المعدلة التي تحافظ على حسابات المنصة وتمسح جلسة الطالب الحالي فقط
+    function logout() {
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("currentStudent");
+      localStorage.removeItem("studentData");
+      localStorage.removeItem("studentName");
+      
+      sessionStorage.clear();
+      
+      window.location.href = "login.html";
+    }
+  </script>
 </head> 
-<body class="text-gray-800 antialiased min-h-screen"> 
+<body class="text-gray-800 antialiased min-h-screen flex flex-row-reverse"> 
 
-  <!-- 1. الهيدر الأزرق العلوي --> 
-  <header class="bg-blue-600/90 backdrop-blur-md text-white relative pt-6 pb-12 px-4 shadow-lg border-b border-blue-500/30"> 
-    
-    <!-- الأزرار العلوية (تسجيل الدخول، لوحة التحكم، والامتحانات) --> 
-    <div class="max-w-6xl mx-auto flex justify-between items-center mb-4"> 
-      <div class="flex items-center gap-2">
-        <a href="login.html" class="bg-white text-blue-600 font-bold px-4 py-2 rounded-lg shadow hover:bg-gray-100 transition flex items-center gap-2 text-sm"> 
-          🔐 تسجيل الدخول 
-        </a> 
-        <a href="admin.html" class="bg-blue-700/80 text-white font-bold px-3 py-2 rounded-lg shadow hover:bg-blue-800 transition flex items-center gap-2 text-sm border border-blue-400/40"> 
-          ⚙️ لوحة التحكم 
-        </a> 
+  <!-- 1. القائمة الجانبية (Sidebar) على اليمين -->
+  <aside class="w-64 bg-blue-600 text-white min-h-screen p-6 flex flex-col justify-between shadow-2xl fixed top-0 right-0 z-50">
+    <div>
+      <!-- شعار المنصة -->
+      <div class="flex items-center gap-3 mb-8 pb-4 border-b border-blue-500">
+        <div class="w-12 h-12 rounded-full bg-white text-blue-600 flex items-center justify-center text-2xl font-bold shadow">
+          📚
+        </div>
+        <div>
+          <h2 class="font-extrabold text-lg"> MR . Abdelaziz</h2>
+          <span class="text-s text-blue-200">For English learning</span>
+        </div>
       </div>
-      <a href="exams.html" class="bg-emerald-500 text-white font-bold px-4 py-2 rounded-lg shadow hover:bg-emerald-600 transition flex items-center gap-2 text-sm"> 
-        📝 الامتحانات الإلكترونية 
-      </a> 
-    </div> 
 
-    <!-- البروفايل والعنوان --> 
-    <div class="text-center flex flex-col items-center"> 
-      <!-- دائرة صورة المدرس --> 
-      <div class="w-28 h-28 rounded-full border-4 border-white/90 overflow-hidden shadow-xl mb-4 bg-gray-200"> 
-        <img src="teacher.jpg" alt="صورة المدرس" class="w-full h-full object-cover"> 
-      </div> 
-      <h1 class="text-3xl md:text-4xl font-extrabold mb-2 tracking-wide flex items-center justify-center gap-2"> 
-        📚 أكاديمية عبدالعزيز 
-      </h1> 
-      <p class="text-blue-100 text-sm md:text-base font-medium"> 
-        منصة تعليم اللغة الإنجليزية 
-      </p> 
-    </div> 
-  </header> 
+      <!-- روابط القائمة -->
+      <nav class="space-y-2">
+        <a href="index.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-blue-700 text-white font-bold transition shadow-sm">
+          🏠 الرئيسية
+        </a>
+        <a href="exams.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-700/60 text-blue-100 font-medium transition">
+          📝 الامتحانات الإلكترونية
+        </a>
+        <a href="profile.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-700/60 text-blue-100 font-medium transition">
+          👤 حسابي
+        </a>
+      
+      </nav>
+    </div>
 
-  <!-- المحتوى الرئيسي --> 
-  <main class="max-w-5xl mx-auto px-4 py-10 space-y-12"> 
+    <!-- زر تسجيل الخروج أسفل القائمة -->
+    <div>
+      <button onclick="logout()" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2 shadow cursor-pointer">
+         🚪 Log out
+      </button>
+    </div>
+  </aside>
+
+  <!-- 2. المحتوى الرئيسي للموقع -->
+  <div class="flex-1 mr-64 min-h-screen flex flex-col">
     
-    <!-- 2. مميزات المنصة --> 
-    <section class="text-center"> 
-      <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center justify-center gap-2"> 
-        ⭐ مميزات المنصة 
-      </h2> 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6"> 
-        <div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-white/60 hover:shadow-md transition text-center"> 
-          <div class="text-2xl font-bold mb-2 flex items-center justify-center gap-2"> 
-            📺 فيديوهات شرح 
-          </div> 
-          <p class="text-gray-600 text-sm font-medium">شرح الدروس بطريقة سهلة ومبسطة</p> 
-        </div> 
-        <div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-white/60 hover:shadow-md transition text-center"> 
-          <div class="text-2xl font-bold mb-2 flex items-center justify-center gap-2"> 
-            📄 ملفات PDF 
-          </div> 
-          <p class="text-gray-600 text-sm font-medium">ملخصات ومذكرات لكل درس</p> 
-        </div> 
-        <div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-white/60 hover:shadow-md transition text-center"> 
-          <div class="text-2xl font-bold mb-2 flex items-center justify-center gap-2"> 
-            🎓 كل المراحل 
-          </div> 
-          <p class="text-gray-600 text-sm font-medium">إعدادي وثانوي في مكان واحد</p> 
-        </div> 
-      </div> 
-    </section> 
+    <!-- هيدر علوي يرحّب بالطالب مع زر تغيير المظهر -->
+    <header class="bg-white/85 backdrop-blur-md shadow-sm border-b border-gray-100 py-4 px-8 flex justify-between items-center transition-colors">
+      <h1 class="text-xl font-extrabold text-gray-800">الرئيسية</h1>
+      
+      <div class="flex items-center gap-3">
+        <!-- زر التبديل بين المظهر الليلي والفاتح -->
+        <button onclick="toggleDarkMode()" id="themeToggleBtn" class="bg-gray-100 hover:bg-gray-200 text-gray-700 p-2.5 rounded-xl border border-gray-200 transition shadow-sm flex items-center justify-center text-lg cursor-pointer" title="تغيير المظهر">
+          🌙
+        </button>
 
-    <!-- 3. اختيار المرحلة --> 
-    <section class="text-center"> 
-      <h2 class="text-2xl font-bold text-gray-800 mb-8"> 
-        اختر المرحلة 
-      </h2> 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto"> 
-        <!-- المرحلة الإعدادية --> 
-        <div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-white/60 text-center flex flex-col items-center justify-center space-y-4"> 
-          <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2"> 
-            📘 الإعدادي 
-          </h3> 
-          <a href="prep.html" class="bg-blue-600 text-white font-bold px-8 py-2 rounded-xl hover:bg-blue-700 transition w-32 shadow-sm inline-block"> 
-            دخول 
-          </a> 
-        </div> 
-        <!-- المرحلة الثانوية --> 
-        <div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-white/60 text-center flex flex-col items-center justify-center space-y-4"> 
-          <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2"> 
-            📗 الثانوي 
-          </h3> 
-          <a href="secondary.html" class="bg-blue-600 text-white font-bold px-8 py-2 rounded-xl hover:bg-blue-700 transition w-32 shadow-sm inline-block"> 
-            دخول 
-          </a> 
-        </div> 
-      </div> 
-    </section> 
+        <!-- ترحيب الطالب -->
+        <div id="studentGreeting" class="text-sm font-bold text-blue-600 bg-blue-50 px-4 py-2 rounded-xl border border-blue-100 shadow-sm">
+          أهلاً بك 👋
+        </div>
+      </div>
+    </header>
 
-  </main> 
+    <!-- محتوى الصفحة -->
+    <main class="max-w-5xl mx-auto px-6 py-10 space-y-12 flex-1 w-full"> 
+      
+      <!-- قسم التعريف بالأستاذ (صورة دائرية كبيرة وبنفس الحجم الجذاب) -->
+      <section class="bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-md border border-gray-100 flex flex-col md:flex-row items-center gap-8 transition-colors">
+        <!-- حاوية الصورة الدائرية الكبيرة والبارزة -->
+        <div class="w-full md:w-5/12 flex justify-center">
+          <div class="relative group p-1.5 bg-gradient-to-tr from-blue-600 to-emerald-500 rounded-full shadow-lg">
+            <div class="w-52 h-52 md:w-56 md:h-56 rounded-full overflow-hidden bg-white border-4 border-white shadow-inner flex items-center justify-center">
+              <img src="teacher.jpg" alt="الأستاذ عبدالعزيز" class="w-full h-full object-cover object-center group-hover:scale-105 transition duration-500" onerror="this.src='https://via.placeholder.com/300'">
+            </div>
+          </div>
+        </div>
+
+        <!-- تفاصيل التعريف بالمعلم -->
+        <div class="w-full md:w-7/12 text-center md:text-right space-y-3">
+          <span class="bg-blue-50 text-blue-600 px-3.5 py-1 rounded-full text-xs font-bold inline-block border border-blue-100">اساس التفوق👌🏻</span>
+          <h2 class="text-2xl font-extrabold text-gray-800">MR. Abdelaziz</h2>
+          <p class="text-gray-600 text-sm font-medium leading-relaxed">
+             اهلا بيك في منصة مستر عبدالعزيز لتعليم ال English . هدفنا تبسيط قواعد اللغة ونساعدك على التفوق وتحقيق أعلى الدرجات بكل سهولة .
+          </p>
+          <div class="pt-1">
+            <span id="studentStageBadge" class="bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-xl text-xs font-bold border border-emerald-200 inline-block shadow-xs">
+              المرحلة: جاري التحميل...
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- مميزات المنصة --> 
+      <section class="text-center"> 
+        <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center justify-center gap-2"> 
+          ⭐ مميزات المنصة 
+        </h2> 
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6"> 
+          <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-white/60 hover:shadow-md transition text-center"> 
+            <div class="text-2xl font-bold mb-2 text-blue-600"> 
+              📺 فيديوهات شرح 
+            </div> 
+            <p class="text-gray-600 text-sm font-medium">شرح الدروس بطريقة سهلة ومبسطة</p> 
+          </div> 
+          <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-white/60 hover:shadow-md transition text-center"> 
+            <div class="text-2xl font-bold mb-2 text-blue-600"> 
+              📄 ملفات PDF 
+            </div> 
+            <p class="text-gray-600 text-sm font-medium">ملخصات ومذكرات لكل درس</p> 
+          </div> 
+          <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-white/60 hover:shadow-md transition text-center"> 
+            <div class="text-2xl font-bold mb-2 text-blue-600"> 
+              🎓 كل المراحل 
+            </div> 
+            <p class="text-gray-600 text-sm font-medium">إعدادي وثانوي في مكان واحد</p> 
+          </div> 
+        </div> 
+      </section> 
+
+      <!-- اختيار المرحلة --> 
+      <section class="text-center"> 
+        <h2 class="text-2xl font-bold text-gray-800 mb-8"> 
+          اختر المرحلة الدراسية 
+        </h2> 
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto"> 
+          <!-- المرحلة الإعدادية --> 
+          <div class="bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-sm border border-white/60 text-center flex flex-col items-center justify-center space-y-4"> 
+            <h3 class="text-xl font-bold text-gray-800"> 
+              📘 المرحلة الإعدادية 
+            </h3> 
+            <button onclick="checkStageAccess('prep.html', 'الإعدادي')" class="bg-blue-600 text-white font-bold px-8 py-2.5 rounded-xl hover:bg-blue-700 transition w-36 shadow-md inline-block cursor-pointer"> 
+              دخول 
+            </button> 
+          </div> 
+          <!-- المرحلة الثانوية --> 
+          <div class="bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-sm border border-white/60 text-center flex flex-col items-center justify-center space-y-4"> 
+            <h3 class="text-xl font-bold text-gray-800"> 
+              📗 المرحلة الثانوية 
+            </h3> 
+            <button onclick="checkStageAccess('secondary.html', 'الثانوي')" class="bg-blue-600 text-white font-bold px-8 py-2.5 rounded-xl hover:bg-blue-700 transition w-36 shadow-md inline-block cursor-pointer"> 
+              دخول 
+            </button> 
+          </div> 
+        </div> 
+      </section> 
+
+    </main>
+  </div>
+
+  <!-- رسالة التنبيه المنبثقة (Custom Modal) مع تأثير سلس -->
+  <div id="customModal" class="fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center z-50 opacity-0 visibility-hidden pointer-events-none">
+    <div class="bg-white rounded-3xl p-6 max-w-sm w-full mx-4 shadow-2xl border border-gray-100 text-center space-y-4">
+      <div class="w-16 h-16 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner">
+        ⚠️
+      </div>
+      <h3 class="text-lg font-bold text-gray-800">تنبيه </h3>
+      <p id="modalMessage" class="text-gray-600 text-sm font-medium leading-relaxed">
+        <!-- سيتم إدراج النص هنا برمجياً -->
+      </p>
+      <button onclick="closeModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl transition shadow cursor-pointer">
+        حسناً
+      </button>
+    </div>
+  </div>
+
+  <!-- سكربت التحكم والتحقق من المرحلة عند الضغط -->
+  <script>
+    function toggleDarkMode() {
+      const body = document.body;
+      const btn = document.getElementById('themeToggleBtn');
+      
+      body.classList.toggle('dark-mode');
+      
+      if (body.classList.contains('dark-mode')) {
+        localStorage.setItem("theme", "dark");
+        btn.innerHTML = "☀️";
+        btn.title = "Dark mode";
+      } else {
+        localStorage.setItem("theme", "light");
+        btn.innerHTML = "🌙";
+        btn.title = "Light mode";
+      }
+    }
+
+    // دالة إظهار الرسالة المنبثقة بتأثير سلس
+    function showModal(message) {
+      document.getElementById('modalMessage').innerText = message;
+      const modal = document.getElementById('customModal');
+      modal.classList.remove('hidden', 'opacity-0', 'visibility-hidden', 'pointer-events-none');
+    }
+
+    // دالة إغلاق الرسالة المنبثقة بتأثير سلس
+    function closeModal() {
+      const modal = document.getElementById('customModal');
+      modal.classList.add('opacity-0', 'visibility-hidden', 'pointer-events-none');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
+    }
+
+    // دالة جلب بيانات الطالب المحدثة من أي مصدر
+    function getStudentData() {
+      const sources = [
+        localStorage.getItem("currentStudent"),
+        localStorage.getItem("studentData"),
+        sessionStorage.getItem("currentStudent"),
+        sessionStorage.getItem("studentData")
+      ];
+
+      for (let src of sources) {
+        if (src) {
+          try {
+            const parsed = JSON.parse(src);
+            if (parsed && parsed.name) return parsed;
+          } catch(e) {}
+        }
+      }
+
+      // التحقق من الاسم المخزن منفرداً
+      const singleName = localStorage.getItem("studentName") || sessionStorage.getItem("singleName") || sessionStorage.getItem("studentName");
+      if (singleName) {
+        return { name: singleName, stage: "غير محددة" };
+      }
+
+      return null;
+    }
+
+    // دالة فحص الصلاحية عند محاولة الدخول لأي مرحلة
+    function checkStageAccess(targetPage, stageType) {
+      const student = getStudentData();
+      if (!student) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      const studentStage = student.stage || "";
+      const isMatch = studentStage.includes(stageType);
+
+      if (isMatch) {
+        window.location.href = targetPage;
+      } else {
+        showModal(`عذراً يا ${student.name}، هذا القسم مخصص لطلاب المرحلة (${stageType} فقط). مرحلتك المسجلة هي (${studentStage}).`);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add('dark-mode');
+        const btn = document.getElementById('themeToggleBtn');
+        if(btn) {
+          btn.innerHTML = "☀️";
+        }
+      }
+
+      // جلب وعرض اسم الطالب ومرحلته في الهيدر والبطاقة فوراً
+      const student = getStudentData();
+      if (student) {
+        const greetingEl = document.getElementById('studentGreeting');
+        if (greetingEl) {
+          greetingEl.innerText = student.name ;
+        }
+        
+        const badgeEl = document.getElementById('studentStageBadge');
+        if (badgeEl) {
+          badgeEl.innerText = "مرحلتك الدراسية: " + (student.stage || "غير محددة");
+        }
+      }
+    });
+  </script>
+
 </body> 
 </html>

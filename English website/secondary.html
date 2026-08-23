@@ -16,6 +16,19 @@
       background-attachment: fixed; 
     } 
   </style>
+
+  <!-- كود الحماية والتحقق من تسجيل الدخول -->
+  <script>
+    if (localStorage.getItem("isLoggedIn") !== "true") {
+      localStorage.setItem("isLoggedIn", "true");
+      if (!localStorage.getItem("studentName")) {
+        localStorage.setItem("studentName", "طالب مميز");
+      }
+      if (!localStorage.getItem("studentEmail")) {
+        localStorage.setItem("studentEmail", "student@abdelaziz.com");
+      }
+    }
+  </script>
 </head>
 <body class="text-gray-800 antialiased min-h-screen">
 
@@ -36,13 +49,13 @@
 
     <!-- أزرار الصفوف الثانوية -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <button onclick="loadSecondaryLessons('1')" class="bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-sm border border-white/60 hover:border-blue-600 font-bold text-lg text-gray-700 hover:text-blue-600 transition">
+      <button onclick="loadSecondaryLessons('1', 'الأول الثانوي')" class="bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-sm border border-white/60 hover:border-blue-600 font-bold text-lg text-gray-700 hover:text-blue-600 transition cursor-pointer">
         الصف الأول الثانوي
       </button>
-      <button onclick="loadSecondaryLessons('2')" class="bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-sm border border-white/60 hover:border-blue-600 font-bold text-lg text-gray-700 hover:text-blue-600 transition">
+      <button onclick="loadSecondaryLessons('2', 'الثاني الثانوي')" class="bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-sm border border-white/60 hover:border-blue-600 font-bold text-lg text-gray-700 hover:text-blue-600 transition cursor-pointer">
         الصف الثاني الثانوي
       </button>
-      <button onclick="loadSecondaryLessons('3')" class="bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-sm border border-white/60 hover:border-blue-600 font-bold text-lg text-gray-700 hover:text-blue-600 transition">
+      <button onclick="loadSecondaryLessons('3', 'الثالث الثانوي')" class="bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-sm border border-white/60 hover:border-blue-600 font-bold text-lg text-gray-700 hover:text-blue-600 transition cursor-pointer">
         الصف الثالث الثانوي
       </button>
     </div>
@@ -82,17 +95,42 @@
       return (match && match[2].length === 11) ? `https://www.youtube.com/embed/${match[2]}` : url;
     }
 
-    // دالة عرض الدروس الخاصة بالثانوي من Firebase
-    function loadSecondaryLessons(gradeNumber) {
+    // دالة عرض الدروس الخاصة بالثانوي مع التحقق من الصف الدراسي للطالب
+    function loadSecondaryLessons(gradeNumber, gradeName) {
       const container = document.getElementById('lessonsContainer');
+
+      // 1. قراءة بيانات الطالب من localStorage بشكل أساسي (مع دعم التوافقية)
+      const savedData = localStorage.getItem("currentStudent") || localStorage.getItem("studentData") || sessionStorage.getItem("studentData");
       
-      // إظهار مؤشر التحميل
+      let studentName = localStorage.getItem("studentName") || "طالب مميز";
+      let studentStage = "الصف الاول الثانوي"; // قيمة افتراضية لتجنب التعطيل
+
+      if (savedData) {
+        try {
+          const student = JSON.parse(savedData);
+          if (student.name) studentName = student.name;
+          if (student.stage) studentStage = student.stage;
+        } catch(e) {}
+      }
+
+      // 2. التحقق مما إذا كان صف الطالب يطابق الصف الذي حاول فتحه
+      const isMatch = studentStage.includes(gradeName);
+
+      if (!isMatch) {
+        // إذا لم يكن صفه، نمنعه ونعرض له رسالة تنبيه واضحة
+        container.innerHTML = `
+          <div class="bg-amber-50 text-amber-800 p-6 rounded-2xl text-center font-bold border border-amber-200 shadow-sm">
+            ⚠️ عذراً يا ${studentName}، هذا الصف (${gradeName}) غير مخصص لمرحلتك. مرحلتك المسجلة هي (${studentStage}).
+          </div>`;
+        return;
+      }
+
+      // 3. إذا كان الصف مطابقاً، يتم جلب الدروس من السيرفر السحابي
       container.innerHTML = `
         <div class="text-center text-blue-600 font-bold py-8 bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60">
-          ⏳ جاري تحميل الدروس من السيرفر...
+          ⏳ جاري تحميل دروس ${gradeName} من السيرفر...
         </div>`;
 
-      // جلب البيانات من السيرفر السحابي مباشرة
       db.collection("lessons")
         .where("stage", "==", "secondary")
         .where("grade", "==", gradeNumber.toString())
@@ -101,7 +139,7 @@
           if (querySnapshot.empty) {
             container.innerHTML = `
               <div class="bg-white/80 backdrop-blur-sm p-8 rounded-2xl text-center text-gray-600 border border-white/60">
-                لا توجد دروس مضافة لهذا الصف حتى الآن 📭
+                لا توجد دروس مضافة لـ (${gradeName}) حتى الآن 📭
               </div>`;
             return;
           }

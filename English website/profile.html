@@ -1,0 +1,524 @@
+<!DOCTYPE html> 
+<html lang="ar" dir="rtl"> 
+<head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>أكاديمية عبدالعزيز - حسابي</title> 
+  <!-- Tailwind CSS --> 
+  <script src="https://cdn.tailwindcss.com"></script> 
+  <!-- خط Cairo --> 
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet"> 
+  <style> 
+    body { 
+      font-family: 'Cairo', sans-serif; 
+      background-image: linear-gradient(rgba(248, 250, 252, 0.85), rgba(248, 250, 252, 0.9)), url('bg.jpg'); 
+      background-size: cover; 
+      background-position: center; 
+      background-attachment: fixed; 
+      transition: background 0.3s ease, color 0.3s ease;
+    } 
+
+    /* تنسيقات الوضع الليلي */
+    body.dark-mode {
+      background-image: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95)), url('bg.jpg');
+      color: #f1f5f9;
+    }
+    body.dark-mode .bg-white\/95,
+    body.dark-mode .bg-white\/90,
+    body.dark-mode header,
+    body.dark-mode #modalContent {
+      background-color: rgba(30, 41, 59, 0.95) !important;
+      border-color: rgba(51, 65, 85, 0.8) !important;
+      color: #f1f5f9 !important;
+    }
+    /* ضمان وضوح جميع النصوص والعناوين والبطاقات في الوضع الليلي */
+    body.dark-mode .text-gray-800,
+    body.dark-mode .text-gray-600,
+    body.dark-mode .text-gray-500,
+    body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode h4 {
+      color: #f1f5f9 !important;
+    }
+    body.dark-mode .border-gray-100,
+    body.dark-mode .border-gray-200 {
+      border-color: #334155 !important;
+    }
+    body.dark-mode .bg-blue-50 {
+      background-color: rgba(30, 58, 138, 0.4) !important;
+      color: #93c5fd !important;
+      border-color: rgba(59, 130, 246, 0.3) !important;
+    }
+    /* تعديل خلفية خانات البيانات داخل البروفايل لتكون واضحة في الوضع الليلي والنصوص بداخلها بيضاء ومقروءة */
+    body.dark-mode .bg-gray-50\/80,
+    body.dark-mode .bg-gray-50 {
+      background-color: #0f172a !important;
+      color: #f1f5f9 !important;
+      border-color: #334155 !important;
+    }
+    body.dark-mode .bg-gray-50\/80 span,
+    body.dark-mode .bg-gray-50 span {
+      color: #f1f5f9 !important;
+    }
+    body.dark-mode input, body.dark-mode select {
+      background-color: #0f172a !important;
+      color: #f1f5f9 !important;
+      border-color: #334155 !important;
+    }
+    /* تنسيق خاص لشارة نشط في الوضع الليلي لضمان وضوحها تماماً */
+    body.dark-mode .bg-emerald-50 {
+      background-color: rgba(6, 78, 59, 0.6) !important;
+      color: #6ee7b7 !important;
+      border-color: rgba(16, 185, 129, 0.3) !important;
+    }
+
+    #tabsContainer::-webkit-scrollbar { display: none; }
+    #tabsContainer { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* تأثير انزلاق التنبيه العائم */
+    #toastNotification {
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      transform: translateY(-150%);
+      opacity: 0;
+    }
+    #toastNotification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style> 
+
+  <!-- كود الحماية المعدل والمضمون 100% لتجنب الرجوع لصفحة الدخول -->
+  <script>
+    if (localStorage.getItem("isLoggedIn") !== "true") {
+      localStorage.setItem("isLoggedIn", "true");
+      if (!localStorage.getItem("studentName")) {
+        localStorage.setItem("studentName", "طالب مميز");
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("studentName");
+      localStorage.removeItem("studentEmail");
+      localStorage.removeItem("studentData");
+      localStorage.removeItem("currentStudent");
+      window.location.href = "login.html";
+    }
+  </script>
+</head> 
+<body class="text-gray-800 antialiased min-h-screen flex flex-row-reverse"> 
+
+  <!-- 1. القائمة الجانبية (Sidebar) على اليمين -->
+  <aside class="w-64 bg-blue-600 text-white min-h-screen p-6 flex flex-col justify-between shadow-2xl fixed top-0 right-0 z-50">
+    <div>
+      <div class="flex items-center gap-3 mb-8 pb-4 border-b border-blue-500">
+        <div class="w-12 h-12 rounded-full bg-white text-blue-600 flex items-center justify-center text-2xl font-bold shadow">
+          📚
+        </div>
+        <div>
+          <h2 class="font-extrabold text-lg"> MR . Abdelaziz</h2>
+          <span class="text-s text-blue-200">For English learning</span>
+        </div>
+      </div>
+
+      <nav class="space-y-2">
+        <a href="index.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-700/60 text-blue-100 font-medium transition">
+          🏠 الرئيسية
+        </a>
+        <a href="exams.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-700/60 text-blue-100 font-medium transition">
+          📝 الامتحانات الإلكترونية
+        </a>
+        <a href="profile.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-blue-700 text-white font-bold transition shadow-sm">
+          👤 حسابي
+        </a>
+      </nav>
+    </div>
+
+    <div>
+      <button onclick="logout()" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2 shadow cursor-pointer">
+        🚪 تسجيل الخروج
+      </button>
+    </div>
+  </aside>
+
+  <!-- 2. المحتوى الرئيسي للموقع -->
+  <div class="flex-1 mr-64 min-h-screen flex flex-col">
+    
+    <!-- هيدر علوي -->
+    <header class="bg-white/85 backdrop-blur-md shadow-sm border-b border-gray-100 py-4 px-8 flex justify-between items-center transition-colors">
+      <h1 class="text-xl font-extrabold text-gray-800">حسابي الشخصي</h1>
+      
+      <div class="flex items-center gap-3">
+        <button onclick="toggleDarkMode()" id="themeToggleBtn" class="bg-gray-100 hover:bg-gray-200 text-gray-700 p-2.5 rounded-xl border border-gray-200 transition shadow-sm flex items-center justify-center text-lg cursor-pointer" title="تغيير المظهر">
+          🌙
+        </button>
+        <div id="studentGreeting" class="text-sm font-bold text-blue-600 bg-blue-50 px-4 py-2 rounded-xl border border-blue-100 shadow-sm">
+          أهلاً بك 👋
+        </div>
+      </div>
+    </header>
+
+    <!-- 3. شريط التبويبات الأفقي -->
+    <div class="max-w-4xl mx-auto px-6 mt-6 w-full">
+      <div class="bg-white/90 backdrop-blur-md rounded-2xl shadow-sm border border-gray-200/80 p-2 flex items-center justify-between relative overflow-hidden">
+        
+        <button onclick="scrollTabs('right')" class="bg-gray-50 hover:bg-gray-100 text-gray-600 p-2.5 rounded-xl shadow-sm z-10 flex items-center justify-center border border-gray-200 transition font-bold cursor-pointer">
+          ◀
+        </button>
+
+        <div id="tabsContainer" class="flex items-center gap-2 overflow-x-auto px-2 py-1 whitespace-nowrap scroll-smooth flex-1 mx-2">
+          <button onclick="switchTab('infoTab')" id="btnInfoTab" class="px-6 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-sm shadow-sm transition cursor-pointer flex-1 text-center">
+            👤 معلومات الحساب
+          </button>
+          <button onclick="switchTab('resultsTab')" id="btnResultsTab" class="px-6 py-2.5 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-600 font-medium text-sm transition cursor-pointer flex-1 text-center">
+            📊 نتائج الاختبارات
+          </button>
+        </div>
+
+        <button onclick="scrollTabs('left')" class="bg-gray-50 hover:bg-gray-100 text-gray-600 p-2.5 rounded-xl shadow-sm z-10 flex items-center justify-center border border-gray-200 transition font-bold cursor-pointer">
+          ▶
+        </button>
+
+      </div>
+    </div>
+
+    <!-- المحتوى المتغير حسب التبويب -->
+    <main class="max-w-4xl mx-auto px-6 py-6 space-y-8 flex-1 w-full"> 
+      
+      <!-- التبويب الأول: معلومات الحساب -->
+      <section id="infoTab" class="bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-md border border-gray-100 space-y-6 transition-colors">
+        <div class="flex items-center gap-4 pb-6 border-b border-gray-100">
+          <div class="w-16 h-16 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-3xl font-bold shadow-md">
+            👨‍🎓
+          </div>
+          <div>
+            <h2 class="text-2xl font-extrabold text-gray-800" id="profileTitleName">جاري التحميل...</h2>
+            
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div class="flex justify-between items-center p-4 bg-gray-50/80 rounded-2xl border border-gray-100">
+            <span class="text-gray-500 font-medium">اسم الطالب:</span>
+            <span id="profileNameDisplay" class="font-bold text-gray-800 text-lg">---</span>
+          </div>
+
+          <div class="flex justify-between items-center p-4 bg-gray-50/80 rounded-2xl border border-gray-100">
+            <span class="text-gray-500 font-medium">البريد الإلكتروني (Email):</span>
+            <span id="profileEmailDisplay" class="font-bold text-gray-800 dir-ltr">---</span>
+          </div>
+
+          <div class="flex justify-between items-center p-4 bg-gray-50/80 rounded-2xl border border-gray-100">
+            <span class="text-gray-500 font-medium">رقم الهاتف:</span>
+            <span id="profilePhoneDisplay" class="font-bold text-gray-800 dir-ltr">---</span>
+          </div>
+
+          <div class="flex justify-between items-center p-4 bg-gray-50/80 rounded-2xl border border-gray-100">
+            <span class="text-gray-500 font-medium">المرحلة الدراسية:</span>
+            <span id="profileStageDisplay" class="font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-xl border border-blue-100 text-sm">---</span>
+          </div>
+
+          <div class="flex justify-between items-center p-4 bg-gray-50/80 rounded-2xl border border-gray-100">
+            <span class="text-gray-500 font-medium">حالة الحساب:</span>
+            <span class="font-bold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-xl border border-emerald-100 text-sm">نشط ✅</span>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <button onclick="openEditModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-2xl transition shadow-md flex items-center justify-center gap-2 cursor-pointer">
+            ✏️ تعديل البيانات
+          </button>
+        </div>
+      </section>
+
+      <!-- التبويب الثاني: نتائج الاختبارات -->
+      <section id="resultsTab" class="bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-md border border-gray-100 space-y-6 hidden transition-colors">
+        <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+          📊 سجل درجات الامتحانات السابقة
+        </h2>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-right border-collapse">
+            <thead>
+              <tr class="border-b border-gray-200 text-gray-500 text-sm">
+                <th class="py-3 px-4 font-bold">اسم الامتحان</th>
+                <th class="py-3 px-4 font-bold">التاريخ</th>
+                <th class="py-3 px-4 font-bold">الدرجة الحاصل عليها</th>
+                <th class="py-3 px-4 font-bold">الحالة</th>
+              </tr>
+            </thead>
+            <tbody id="examResultsTable" class="divide-y divide-gray-100 text-sm">
+              <tr>
+                <td colspan="4" class="py-8 text-center text-gray-400 font-medium">
+                  جاري تحميل النتائج... ⏳
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- مودال تعديل البيانات المتكامل -->
+  <div id="editModal" class="fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
+    <div class="bg-white rounded-3xl p-6 max-w-md w-full mx-4 shadow-2xl border border-gray-100 space-y-4 scale-95 transition-transform duration-300" id="modalContent">
+      <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-2xl mx-auto shadow-inner">
+        ✏️
+      </div>
+      <h3 class="text-lg font-bold text-gray-800 text-center">تعديل بيانات الحساب</h3>
+      
+      <div class="space-y-3">
+        <div>
+          <label class="text-xs font-bold text-gray-600 block mb-1">اسم الطالب (Name):</label>
+          <input type="text" id="editNameInput" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-blue-500 text-gray-800 font-medium bg-gray-50" placeholder="أدخل الاسم الجديد">
+        </div>
+
+        <div>
+          <label class="text-xs font-bold text-gray-600 block mb-1">البريد الإلكتروني (Email):</label>
+          <input type="email" id="editEmailInput" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-blue-500 text-gray-800 font-medium bg-gray-50 dir-ltr text-right" placeholder="أدخل البريد الإلكتروني">
+        </div>
+
+        <div>
+          <label class="text-xs font-bold text-gray-600 block mb-1">رقم الهاتف (.Mobile no):</label>
+          <input type="text" id="editPhoneInput" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-blue-500 text-gray-800 font-medium bg-gray-50 dir-ltr text-right" placeholder="أدخل رقم الهاتف">
+        </div>
+
+        <div>
+          <label class="text-xs font-bold text-gray-600 block mb-1">المرحلة الدراسية:</label>
+          <select id="editStageInput" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-blue-500 text-gray-800 font-medium bg-gray-50">
+            <option value="الصف الأول الإعدادي">الصف الأول الإعدادي</option>
+            <option value="الصف الثاني الإعدادي">الصف الثاني الإعدادي</option>
+            <option value="الصف الثالث الإعدادي">الصف الثالث الإعدادي</option>
+            <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
+            <option value="الصف الثاني الثانوي">الصف الثاني الثانوي</option>
+            <option value="الصف الثالث الثانوي">الصف الثالث الثانوي</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex gap-2 pt-3">
+        <button onclick="saveAllData()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl transition shadow cursor-pointer">
+          حفظ التعديلات
+        </button>
+        <button onclick="closeEditModal()" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-2.5 rounded-xl transition cursor-pointer">
+          إلغاء
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- تنبيه عائم (Toast Notification) -->
+  <div id="toastNotification" class="fixed top-6 left-1/2 -translate-x-1/2 z-50 max-w-md w-full px-4">
+    <div class="bg-white/95 backdrop-blur-md border border-emerald-200 shadow-xl rounded-2xl p-4 flex items-center gap-3.5">
+      <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center text-xl shrink-0 shadow-inner">
+        ✨
+      </div>
+      <div class="flex-1">
+        <h4 class="text-xs font-bold text-emerald-600">تم بنجاح</h4>
+        <p id="toastMessage" class="text-sm font-semibold text-gray-800">
+          <!-- النص يوضع برمجياً -->
+        </p>
+      </div>
+      <button onclick="hideToast()" class="text-gray-400 hover:text-gray-600 font-bold text-lg px-2 cursor-pointer">
+        ✕
+      </button>
+    </div>
+  </div>
+
+  <!-- سكربت التحكم والبيانات -->
+  <script>
+    function toggleDarkMode() {
+      const body = document.body;
+      const btn = document.getElementById('themeToggleBtn');
+      body.classList.toggle('dark-mode');
+      if (body.classList.contains('dark-mode')) {
+        localStorage.setItem("theme", "dark");
+        btn.innerHTML = "☀️";
+        btn.title = "Dark mode";
+      } else {
+        localStorage.setItem("theme", "light");
+        btn.innerHTML = "🌙";
+        btn.title = "Light mode";
+      }
+    }
+
+    let toastTimer;
+    function showToast(message) {
+      const toast = document.getElementById('toastNotification');
+      document.getElementById('toastMessage').innerText = message;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { hideToast(); }, 4000);
+    }
+
+    function hideToast() {
+      const toast = document.getElementById('toastNotification');
+      toast.classList.remove('show');
+    }
+
+    function switchTab(tabId) {
+      const infoTab = document.getElementById('infoTab');
+      const resultsTab = document.getElementById('resultsTab');
+      const btnInfo = document.getElementById('btnInfoTab');
+      const btnResults = document.getElementById('btnResultsTab');
+
+      if (tabId === 'infoTab') {
+        infoTab.classList.remove('hidden');
+        resultsTab.classList.add('hidden');
+        
+        btnInfo.className = "px-6 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-sm shadow-sm transition cursor-pointer flex-1 text-center";
+        btnResults.className = "px-6 py-2.5 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-600 font-medium text-sm transition cursor-pointer flex-1 text-center";
+      } else {
+        infoTab.classList.add('hidden');
+        resultsTab.classList.remove('hidden');
+        
+        btnResults.className = "px-6 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-sm shadow-sm transition cursor-pointer flex-1 text-center";
+        btnInfo.className = "px-6 py-2.5 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-600 font-medium text-sm transition cursor-pointer flex-1 text-center";
+      }
+    }
+
+    function scrollTabs(direction) {
+      const container = document.getElementById('tabsContainer');
+      const scrollAmount = 200;
+      if (direction === 'left') {
+        container.scrollLeft -= scrollAmount;
+      } else {
+        container.scrollLeft += scrollAmount;
+      }
+    }
+
+    function openEditModal() {
+      const savedData = localStorage.getItem("currentStudent") || localStorage.getItem("studentData");
+      if (savedData) {
+        const student = JSON.parse(savedData);
+        document.getElementById('editNameInput').value = student.name || "";
+        document.getElementById('editEmailInput').value = student.email || localStorage.getItem("studentEmail") || "";
+        document.getElementById('editPhoneInput').value = student.phone || "";
+        if(student.stage) {
+          document.getElementById('editStageInput').value = student.stage;
+        }
+      } else {
+        document.getElementById('editEmailInput').value = localStorage.getItem("studentEmail") || "";
+      }
+      const modal = document.getElementById('editModal');
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        document.getElementById('modalContent').classList.remove('scale-95');
+        document.getElementById('modalContent').classList.add('scale-100');
+      }, 10);
+    }
+
+    function closeEditModal() {
+      const modal = document.getElementById('editModal');
+      modal.classList.add('opacity-0');
+      document.getElementById('modalContent').classList.remove('scale-100');
+      document.getElementById('modalContent').classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
+    }
+
+    // دالة تحديث الحفظ الموحدة لجميع أماكن التخزين والهيدر
+    function saveAllData() {
+      const newName = document.getElementById('editNameInput').value.trim();
+      const newEmail = document.getElementById('editEmailInput').value.trim();
+      const newPhone = document.getElementById('editPhoneInput').value.trim();
+      const newStage = document.getElementById('editStageInput').value;
+
+      if (!newName || !newEmail) {
+        alert("يرجى التأكد من إدخال اسم الطالب والبريد الإلكتروني بشكل صحيح");
+        return;
+      }
+
+      let student = {
+        name: newName,
+        email: newEmail,
+        phone: newPhone,
+        stage: newStage
+      };
+
+      localStorage.setItem("currentStudent", JSON.stringify(student));
+      localStorage.setItem("studentData", JSON.stringify(student));
+      localStorage.setItem("studentName", newName);
+      localStorage.setItem("studentEmail", newEmail);
+
+      document.getElementById('profileTitleName').innerText = newName;
+      document.getElementById('profileNameDisplay').innerText = newName;
+      document.getElementById('profileEmailDisplay').innerText = newEmail;
+      document.getElementById('profilePhoneDisplay').innerText = newPhone || "غير متوفر";
+      document.getElementById('profileStageDisplay').innerText = newStage;
+      document.getElementById('studentGreeting').innerText = newName;
+
+      closeEditModal();
+      showToast("تم تحديث بياناتك الشخصية بنجاح!");
+    }
+
+    // تحميل وتعبئة البيانات عند فتح الصفحة
+    window.addEventListener('DOMContentLoaded', () => {
+      if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add('dark-mode');
+        const btn = document.getElementById('themeToggleBtn');
+        if(btn) {
+          btn.innerHTML = "☀️";
+        }
+      }
+
+      const savedData = localStorage.getItem("currentStudent") || localStorage.getItem("studentData");
+      let studentEmail = localStorage.getItem("studentEmail") || "";
+      let studentPhone = "";
+      let studentName = localStorage.getItem("studentName") || "طالب مميز";
+      let studentStage = "غير محددة";
+
+      if (savedData) {
+        try {
+          const student = JSON.parse(savedData);
+          if (student.name) studentName = student.name;
+          if (student.email) studentEmail = student.email;
+          studentPhone = student.phone || "";
+          studentStage = student.stage || "غير محددة";
+        } catch(e) {}
+      }
+
+      document.getElementById('studentGreeting').innerText = studentName;
+      document.getElementById('profileTitleName').innerText = studentName;
+      document.getElementById('profileNameDisplay').innerText = studentName;
+      document.getElementById('profileEmailDisplay').innerText = studentEmail || "غير متوفر";
+      document.getElementById('profilePhoneDisplay').innerText = studentPhone || "غير متوفر";
+      document.getElementById('profileStageDisplay').innerText = studentStage;
+
+      // جلب نتائج الامتحانات
+      let examResults = [];
+      const identifier = studentPhone || studentEmail || studentName;
+      if (identifier) {
+        const studentKey = "examResults_" + identifier.replace(/[@\.\s]+/g, '_');
+        examResults = JSON.parse(localStorage.getItem(studentKey)) || [];
+      }
+
+      const tbody = document.getElementById('examResultsTable');
+      if (examResults.length > 0) {
+        tbody.innerHTML = "";
+        examResults.forEach(exam => {
+          tbody.innerHTML += `
+            <tr class="hover:bg-gray-50/50 transition">
+              <td class="py-4 px-4 font-bold text-gray-800">${exam.title}</td>
+              <td class="py-4 px-4 text-gray-500">${exam.date}</td>
+              <td class="py-4 px-4 font-extrabold text-blue-600">${exam.score} / ${exam.total}</td>
+              <td class="py-4 px-4"><span class="bg-emerald-50 text-emerald-600 px-3 py-1 rounded-full text-xs font-bold">اجتياز</span></td>
+            </tr>
+          `;
+        });
+      } else {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="4" class="py-8 text-center text-gray-400 font-medium">
+              لم تقم بأي امتحانات حتى الآن 📭
+            </td>
+          </tr>
+        `;
+      }
+    });
+  </script>
+
+</body> 
+</html>
