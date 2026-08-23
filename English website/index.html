@@ -44,7 +44,6 @@
       border-color: rgba(59, 130, 246, 0.3) !important;
     }
 
-    /* تأثيرات ظهور سلسة (Smooth Modal Animations) */
     #customModal {
       transition: opacity 0.3s ease, visibility 0.3s ease;
     }
@@ -66,33 +65,46 @@
       window.location.href = "login.html";
     }
 
-    // دالة تسجيل الخروج المعدلة التي تحافظ على حسابات المنصة وتمسح جلسة الطالب الحالي فقط
     function logout() {
       localStorage.removeItem("isLoggedIn");
       localStorage.removeItem("currentStudent");
       localStorage.removeItem("studentData");
       localStorage.removeItem("studentName");
-      
       sessionStorage.clear();
-      
       window.location.href = "login.html";
     }
   </script>
 </head> 
-<body class="text-gray-800 antialiased min-h-screen flex flex-row-reverse"> 
+<body class="text-gray-800 antialiased min-h-screen flex flex-col lg:flex-row-reverse"> 
 
-  <!-- 1. القائمة الجانبية (Sidebar) على اليمين -->
-  <aside class="w-64 bg-blue-600 text-white min-h-screen p-6 flex flex-col justify-between shadow-2xl fixed top-0 right-0 z-50">
+  <!-- زر القائمة للموبايل -->
+  <div class="lg:hidden bg-blue-600 text-white p-4 flex justify-between items-center shadow-md">
+    <div class="flex items-center gap-2">
+      <span class="font-bold">MR. Abdelaziz</span>
+    </div>
+    <button onclick="toggleMobileSidebar()" class="bg-blue-700 p-2 rounded-xl text-white focus:outline-none">
+      ☰ القائمة
+    </button>
+  </div>
+
+  <!-- خلفية شفافة عند فتح القائمة على الموبايل -->
+  <div id="sidebarOverlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden"></div>
+
+  <!-- 1. القائمة الجانبية (Sidebar) -->
+  <aside id="appSidebar" class="w-64 bg-blue-600 text-white min-h-screen p-6 flex flex-col justify-between shadow-2xl fixed top-0 right-0 z-50 transform translate-x-full lg:translate-x-0 transition-transform duration-300">
     <div>
-      <!-- شعار المنصة -->
-      <div class="flex items-center gap-3 mb-8 pb-4 border-b border-blue-500">
-        <div class="w-12 h-12 rounded-full bg-white text-blue-600 flex items-center justify-center text-2xl font-bold shadow">
-          📚
+      <!-- زر إغلاق القائمة على الموبايل -->
+      <div class="flex justify-between items-center mb-8 pb-4 border-b border-blue-500">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-white text-blue-600 flex items-center justify-center text-xl font-bold shadow">
+            📚
+          </div>
+          <div>
+            <h2 class="font-extrabold text-base">MR. Abdelaziz</h2>
+            <span class="text-xs text-blue-200">For English learning</span>
+          </div>
         </div>
-        <div>
-          <h2 class="font-extrabold text-lg"> MR . Abdelaziz</h2>
-          <span class="text-s text-blue-200">For English learning</span>
-        </div>
+        <button onclick="toggleMobileSidebar()" class="lg:hidden text-white font-bold text-lg">✕</button>
       </div>
 
       <!-- روابط القائمة -->
@@ -106,58 +118,52 @@
         <a href="profile.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-700/60 text-blue-100 font-medium transition">
           👤 حسابي
         </a>
-      
       </nav>
     </div>
 
-    <!-- زر تسجيل الخروج أسفل القائمة -->
+    <!-- زر تسجيل الخروج -->
     <div>
       <button onclick="logout()" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2 shadow cursor-pointer">
-         🚪 Log out
+        🚪 Log out
       </button>
     </div>
   </aside>
 
   <!-- 2. المحتوى الرئيسي للموقع -->
-  <div class="flex-1 mr-64 min-h-screen flex flex-col">
+  <div class="flex-1 lg:mr-64 min-h-screen flex flex-col w-full">
     
-    <!-- هيدر علوي يرحّب بالطالب مع زر تغيير المظهر -->
-    <header class="bg-white/85 backdrop-blur-md shadow-sm border-b border-gray-100 py-4 px-8 flex justify-between items-center transition-colors">
-      <h1 class="text-xl font-extrabold text-gray-800">الرئيسية</h1>
+    <!-- هيدر علوي -->
+    <header class="bg-white/85 backdrop-blur-md shadow-sm border-b border-gray-100 py-4 px-6 md:px-8 flex justify-between items-center transition-colors">
+      <h1 class="text-lg md:text-xl font-extrabold text-gray-800">الرئيسية</h1>
       
       <div class="flex items-center gap-3">
-        <!-- زر التبديل بين المظهر الليلي والفاتح -->
         <button onclick="toggleDarkMode()" id="themeToggleBtn" class="bg-gray-100 hover:bg-gray-200 text-gray-700 p-2.5 rounded-xl border border-gray-200 transition shadow-sm flex items-center justify-center text-lg cursor-pointer" title="تغيير المظهر">
           🌙
         </button>
-
-        <!-- ترحيب الطالب -->
-        <div id="studentGreeting" class="text-sm font-bold text-blue-600 bg-blue-50 px-4 py-2 rounded-xl border border-blue-100 shadow-sm">
+        <div id="studentGreeting" class="text-xs md:text-sm font-bold text-blue-600 bg-blue-50 px-3 md:px-4 py-2 rounded-xl border border-blue-100 shadow-sm">
           أهلاً بك 👋
         </div>
       </div>
     </header>
 
     <!-- محتوى الصفحة -->
-    <main class="max-w-5xl mx-auto px-6 py-10 space-y-12 flex-1 w-full"> 
+    <main class="max-w-5xl mx-auto px-4 md:px-6 py-8 space-y-10 flex-1 w-full"> 
       
-      <!-- قسم التعريف بالأستاذ (صورة دائرية كبيرة وبنفس الحجم الجذاب) -->
-      <section class="bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-md border border-gray-100 flex flex-col md:flex-row items-center gap-8 transition-colors">
-        <!-- حاوية الصورة الدائرية الكبيرة والبارزة -->
+      <!-- قسم التعريف بالأستاذ -->
+      <section class="bg-white/95 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-md border border-gray-100 flex flex-col md:flex-row items-center gap-8 transition-colors">
         <div class="w-full md:w-5/12 flex justify-center">
           <div class="relative group p-1.5 bg-gradient-to-tr from-blue-600 to-emerald-500 rounded-full shadow-lg">
-            <div class="w-52 h-52 md:w-56 md:h-56 rounded-full overflow-hidden bg-white border-4 border-white shadow-inner flex items-center justify-center">
+            <div class="w-44 h-44 md:w-52 md:h-52 rounded-full overflow-hidden bg-white border-4 border-white shadow-inner flex items-center justify-center">
               <img src="teacher.jpg" alt="الأستاذ عبدالعزيز" class="w-full h-full object-cover object-center group-hover:scale-105 transition duration-500" onerror="this.src='https://via.placeholder.com/300'">
             </div>
           </div>
         </div>
 
-        <!-- تفاصيل التعريف بالمعلم -->
         <div class="w-full md:w-7/12 text-center md:text-right space-y-3">
           <span class="bg-blue-50 text-blue-600 px-3.5 py-1 rounded-full text-xs font-bold inline-block border border-blue-100">اساس التفوق👌🏻</span>
-          <h2 class="text-2xl font-extrabold text-gray-800">MR. Abdelaziz</h2>
+          <h2 class="text-xl md:text-2xl font-extrabold text-gray-800">MR. Abdelaziz</h2>
           <p class="text-gray-600 text-sm font-medium leading-relaxed">
-             اهلا بيك في منصة مستر عبدالعزيز لتعليم ال English . هدفنا تبسيط قواعد اللغة ونساعدك على التفوق وتحقيق أعلى الدرجات بكل سهولة .
+            اهلا بيك في منصة مستر عبدالعزيز لتعليم ال English . هدفنا تبسيط قواعد اللغة ونساعدك على التفوق وتحقيق أعلى الدرجات بكل سهولة .
           </p>
           <div class="pt-1">
             <span id="studentStageBadge" class="bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-xl text-xs font-bold border border-emerald-200 inline-block shadow-xs">
@@ -169,26 +175,20 @@
 
       <!-- مميزات المنصة --> 
       <section class="text-center"> 
-        <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center justify-center gap-2"> 
+        <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-6 flex items-center justify-center gap-2"> 
           ⭐ مميزات المنصة 
         </h2> 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6"> 
-          <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-white/60 hover:shadow-md transition text-center"> 
-            <div class="text-2xl font-bold mb-2 text-blue-600"> 
-              📺 فيديوهات شرح 
-            </div> 
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6"> 
+          <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-white/60 text-center"> 
+            <div class="text-xl md:text-2xl font-bold mb-2 text-blue-600">📺 فيديوهات شرح</div> 
             <p class="text-gray-600 text-sm font-medium">شرح الدروس بطريقة سهلة ومبسطة</p> 
           </div> 
-          <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-white/60 hover:shadow-md transition text-center"> 
-            <div class="text-2xl font-bold mb-2 text-blue-600"> 
-              📄 ملفات PDF 
-            </div> 
+          <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-white/60 text-center"> 
+            <div class="text-xl md:text-2xl font-bold mb-2 text-blue-600">📄 ملفات PDF</div> 
             <p class="text-gray-600 text-sm font-medium">ملخصات ومذكرات لكل درس</p> 
           </div> 
-          <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-white/60 hover:shadow-md transition text-center"> 
-            <div class="text-2xl font-bold mb-2 text-blue-600"> 
-              🎓 كل المراحل 
-            </div> 
+          <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-white/60 text-center"> 
+            <div class="text-xl md:text-2xl font-bold mb-2 text-blue-600">🎓 كل المراحل</div> 
             <p class="text-gray-600 text-sm font-medium">إعدادي وثانوي في مكان واحد</p> 
           </div> 
         </div> 
@@ -196,27 +196,15 @@
 
       <!-- اختيار المرحلة --> 
       <section class="text-center"> 
-        <h2 class="text-2xl font-bold text-gray-800 mb-8"> 
-          اختر المرحلة الدراسية 
-        </h2> 
+        <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-6">اختر المرحلة الدراسية</h2> 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto"> 
-          <!-- المرحلة الإعدادية --> 
-          <div class="bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-sm border border-white/60 text-center flex flex-col items-center justify-center space-y-4"> 
-            <h3 class="text-xl font-bold text-gray-800"> 
-              📘 المرحلة الإعدادية 
-            </h3> 
-            <button onclick="checkStageAccess('prep.html', 'الإعدادي')" class="bg-blue-600 text-white font-bold px-8 py-2.5 rounded-xl hover:bg-blue-700 transition w-36 shadow-md inline-block cursor-pointer"> 
-              دخول 
-            </button> 
+          <div class="bg-white/90 backdrop-blur-sm p-6 md:p-8 rounded-2xl shadow-sm border border-white/60 text-center flex flex-col items-center justify-center space-y-4"> 
+            <h3 class="text-lg md:text-xl font-bold text-gray-800">📘 المرحلة الإعدادية</h3> 
+            <button onclick="checkStageAccess('prep.html', 'الإعدادي')" class="bg-blue-600 text-white font-bold px-8 py-2.5 rounded-xl hover:bg-blue-700 transition w-36 shadow-md cursor-pointer">دخول</button> 
           </div> 
-          <!-- المرحلة الثانوية --> 
-          <div class="bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-sm border border-white/60 text-center flex flex-col items-center justify-center space-y-4"> 
-            <h3 class="text-xl font-bold text-gray-800"> 
-              📗 المرحلة الثانوية 
-            </h3> 
-            <button onclick="checkStageAccess('secondary.html', 'الثانوي')" class="bg-blue-600 text-white font-bold px-8 py-2.5 rounded-xl hover:bg-blue-700 transition w-36 shadow-md inline-block cursor-pointer"> 
-              دخول 
-            </button> 
+          <div class="bg-white/90 backdrop-blur-sm p-6 md:p-8 rounded-2xl shadow-sm border border-white/60 text-center flex flex-col items-center justify-center space-y-4"> 
+            <h3 class="text-lg md:text-xl font-bold text-gray-800">📗 المرحلة الثانوية</h3> 
+            <button onclick="checkStageAccess('secondary.html', 'الثانوي')" class="bg-blue-600 text-white font-bold px-8 py-2.5 rounded-xl hover:bg-blue-700 transition w-36 shadow-md cursor-pointer">دخول</button> 
           </div> 
         </div> 
       </section> 
@@ -224,58 +212,50 @@
     </main>
   </div>
 
-  <!-- رسالة التنبيه المنبثقة (Custom Modal) مع تأثير سلس -->
+  <!-- رسالة التنبيه المنبثقة -->
   <div id="customModal" class="fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center z-50 opacity-0 visibility-hidden pointer-events-none">
     <div class="bg-white rounded-3xl p-6 max-w-sm w-full mx-4 shadow-2xl border border-gray-100 text-center space-y-4">
-      <div class="w-16 h-16 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner">
-        ⚠️
-      </div>
-      <h3 class="text-lg font-bold text-gray-800">تنبيه </h3>
-      <p id="modalMessage" class="text-gray-600 text-sm font-medium leading-relaxed">
-        <!-- سيتم إدراج النص هنا برمجياً -->
-      </p>
-      <button onclick="closeModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl transition shadow cursor-pointer">
-        حسناً
-      </button>
+      <div class="w-16 h-16 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner">⚠️</div>
+      <h3 class="text-lg font-bold text-gray-800">تنبيه</h3>
+      <p id="modalMessage" class="text-gray-600 text-sm font-medium leading-relaxed"></p>
+      <button onclick="closeModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl transition shadow cursor-pointer">حسناً</button>
     </div>
   </div>
 
-  <!-- سكربت التحكم والتحقق من المرحلة عند الضغط -->
   <script>
+    // دالة فتح وإغلاق القائمة الجانبية على الموبايل
+    function toggleMobileSidebar() {
+      const sidebar = document.getElementById('appSidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      sidebar.classList.toggle('translate-x-full');
+      overlay.classList.toggle('hidden');
+    }
+
     function toggleDarkMode() {
       const body = document.body;
       const btn = document.getElementById('themeToggleBtn');
-      
       body.classList.toggle('dark-mode');
-      
       if (body.classList.contains('dark-mode')) {
         localStorage.setItem("theme", "dark");
         btn.innerHTML = "☀️";
-        btn.title = "Dark mode";
       } else {
         localStorage.setItem("theme", "light");
         btn.innerHTML = "🌙";
-        btn.title = "Light mode";
       }
     }
 
-    // دالة إظهار الرسالة المنبثقة بتأثير سلس
     function showModal(message) {
       document.getElementById('modalMessage').innerText = message;
       const modal = document.getElementById('customModal');
       modal.classList.remove('hidden', 'opacity-0', 'visibility-hidden', 'pointer-events-none');
     }
 
-    // دالة إغلاق الرسالة المنبثقة بتأثير سلس
     function closeModal() {
       const modal = document.getElementById('customModal');
       modal.classList.add('opacity-0', 'visibility-hidden', 'pointer-events-none');
-      setTimeout(() => {
-        modal.classList.add('hidden');
-      }, 300);
+      setTimeout(() => { modal.classList.add('hidden'); }, 300);
     }
 
-    // دالة جلب بيانات الطالب المحدثة من أي مصدر
     function getStudentData() {
       const sources = [
         localStorage.getItem("currentStudent"),
@@ -283,7 +263,6 @@
         sessionStorage.getItem("currentStudent"),
         sessionStorage.getItem("studentData")
       ];
-
       for (let src of sources) {
         if (src) {
           try {
@@ -292,27 +271,21 @@
           } catch(e) {}
         }
       }
-
-      // التحقق من الاسم المخزن منفرداً
       const singleName = localStorage.getItem("studentName") || sessionStorage.getItem("singleName") || sessionStorage.getItem("studentName");
       if (singleName) {
         return { name: singleName, stage: "غير محددة" };
       }
-
       return null;
     }
 
-    // دالة فحص الصلاحية عند محاولة الدخول لأي مرحلة
     function checkStageAccess(targetPage, stageType) {
       const student = getStudentData();
       if (!student) {
         window.location.href = "login.html";
         return;
       }
-
       const studentStage = student.stage || "";
       const isMatch = studentStage.includes(stageType);
-
       if (isMatch) {
         window.location.href = targetPage;
       } else {
@@ -324,23 +297,16 @@
       if (localStorage.getItem("theme") === "dark") {
         document.body.classList.add('dark-mode');
         const btn = document.getElementById('themeToggleBtn');
-        if(btn) {
-          btn.innerHTML = "☀️";
-        }
+        if(btn) btn.innerHTML = "☀️";
       }
 
-      // جلب وعرض اسم الطالب ومرحلته في الهيدر والبطاقة فوراً
       const student = getStudentData();
       if (student) {
         const greetingEl = document.getElementById('studentGreeting');
-        if (greetingEl) {
-          greetingEl.innerText = student.name ;
-        }
+        if (greetingEl) greetingEl.innerText = student.name;
         
         const badgeEl = document.getElementById('studentStageBadge');
-        if (badgeEl) {
-          badgeEl.innerText = "مرحلتك الدراسية: " + (student.stage || "غير محددة");
-        }
+        if (badgeEl) badgeEl.innerText = "مرحلتك الدراسية: " + (student.stage || "غير محددة");
       }
     });
   </script>
