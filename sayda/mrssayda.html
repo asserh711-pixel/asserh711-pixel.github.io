@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>عالم الحروف مع ميس سيدة 🎈</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -23,6 +23,7 @@
       min-height: 100vh;
       overflow-x: hidden;
       user-select: none;
+      -webkit-tap-highlight-color: transparent;
       transition: background 0.3s ease, color 0.3s ease;
     }
 
@@ -48,227 +49,261 @@
     .pulse-glow { animation: pulseGlow 2s infinite ease-in-out; }
 
     .card-bounce {
-      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background-color 0.3s ease;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, background-color 0.3s ease;
       cursor: pointer;
     }
     .card-bounce:hover {
-      transform: translateY(-6px) scale(1.04);
-      box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.15);
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
     }
     .card-bounce:active {
-      transform: scale(0.95);
+      transform: scale(0.96);
     }
   </style>
 </head>
 <body class="text-slate-800 dark:text-slate-100 flex flex-col justify-between pb-6 relative">
 
+  <!-- Welcome Choice Modal -->
+  <div id="welcome-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white dark:bg-slate-800 p-6 sm:p-10 rounded-3xl max-w-md w-full shadow-2xl border-4 border-amber-400 text-center space-y-6 my-auto">
+      <div class="text-6xl sm:text-7xl">👩‍🏫🎈</div>
+      <div class="space-y-2">
+        <h2 class="text-xl sm:text-3xl font-black text-slate-800 dark:text-white">أهلاً بيك يا بطل مع ميس سيدة</h2>
+        <p class="text-slate-600 dark:text-slate-300 font-bold text-xs sm:text-base">تحب تبدأ رحلتك التعليمية وتلعب بأنهي لغة النهاردة؟</p>
+      </div>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+        <button type="button" onclick="window.chooseInitialLang('ar')" class="bg-gradient-to-tr from-amber-400 to-yellow-300 hover:from-amber-300 hover:to-yellow-200 text-slate-900 font-black p-3.5 sm:p-4 rounded-2xl shadow-xl transition transform active:scale-95 text-base sm:text-lg flex flex-col items-center gap-1 border-2 border-amber-200 cursor-pointer">
+          <span class="text-2xl sm:text-3xl">AR</span>
+          <span>العربية</span>
+        </button>
+        <button type="button" onclick="window.chooseInitialLang('en')" class="bg-gradient-to-tr from-sky-400 to-blue-500 hover:from-sky-300 hover:to-blue-400 text-white font-black p-3.5 sm:p-4 rounded-2xl shadow-xl transition transform active:scale-95 text-base sm:text-lg flex flex-col items-center gap-1 border-2 border-sky-300 cursor-pointer">
+          <span class="text-2xl sm:text-3xl">EN</span>
+          <span>English</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Background Decorative Elements -->
-  <div class="fixed top-12 left-10 text-4xl float-1 opacity-70 pointer-events-none z-0">🎈</div>
-  <div class="fixed top-32 right-12 text-5xl float-2 opacity-70 pointer-events-none z-0">⭐</div>
-  <div class="fixed bottom-10 left-16 text-5xl float-2 opacity-70 pointer-events-none z-0">🚀</div>
-  <div class="fixed bottom-20 right-20 text-4xl float-1 opacity-70 pointer-events-none z-0">🧸</div>
+  <div class="fixed top-12 left-6 text-3xl sm:text-4xl float-1 opacity-50 pointer-events-none z-0">🎈</div>
+  <div class="fixed top-32 right-6 text-4xl sm:text-5xl float-2 opacity-50 pointer-events-none z-0">⭐</div>
+  <div class="fixed bottom-10 left-8 text-4xl sm:text-5xl float-2 opacity-50 pointer-events-none z-0">🚀</div>
+  <div class="fixed bottom-20 right-8 text-3xl sm:text-4xl float-1 opacity-50 pointer-events-none z-0">🧸</div>
 
   <!-- Header / Navigation -->
-  <header class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b-4 border-amber-400 dark:border-amber-500 transition-colors">
-    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
+  <header class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md shadow-lg sticky top-0 z-40 border-b-4 border-amber-400 dark:border-amber-500 transition-colors">
+    <div class="max-w-5xl mx-auto px-2 sm:px-4 py-2.5 flex items-center justify-between gap-1 sm:gap-2">
       <!-- Logo -->
-      <div class="flex items-center gap-3 cursor-pointer group" onclick="window.showSection('home')">
-        <div class="bg-gradient-to-tr from-amber-400 to-yellow-300 text-white w-11 h-11 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center text-2xl sm:text-3xl font-black shadow-lg transform -rotate-6 group-hover:rotate-0 transition duration-300">
+      <div class="flex items-center gap-2 cursor-pointer group shrink-0" onclick="window.playSound('pop'); window.showSection('home')">
+        <div class="bg-gradient-to-tr from-amber-400 to-yellow-300 text-white w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center text-xl sm:text-3xl font-black shadow-lg transform -rotate-6 group-hover:rotate-0 transition duration-300">
           أ
         </div>
-        <div>
-          <h1 class="text-lg sm:text-xl font-black text-slate-800 dark:text-white tracking-wide">عَالَمُ الحُرُوفِ 🌟</h1>
-          <p class="text-xs font-bold text-amber-600 dark:text-amber-400">بإشراف ميس سيدة ❤️</p>
+        <div class="hidden xs:block">
+          <h1 class="text-sm sm:text-xl font-black text-slate-800 dark:text-white tracking-wide">عَالَمُ الحُرُوفِ 🌟</h1>
+          <p class="text-[10px] sm:text-xs font-bold text-amber-600 dark:text-amber-400">بإشراف ميس سيدة ❤️</p>
         </div>
       </div>
 
       <!-- Navigation Tabs -->
-      <nav class="flex gap-1.5 sm:gap-2">
-        <button type="button" onclick="window.showSection('home')" id="nav-home" class="nav-btn bg-amber-200 dark:bg-amber-500/30 text-amber-900 dark:text-amber-200 px-3 sm:px-4 py-2 rounded-2xl font-black flex items-center gap-2 transition shadow-sm cursor-pointer">
+      <nav class="flex gap-1 sm:gap-2">
+        <button type="button" onclick="window.playSound('pop'); window.showSection('home')" id="nav-home" class="nav-btn bg-amber-200 dark:bg-amber-500/30 text-amber-900 dark:text-amber-200 px-2.5 sm:px-4 py-2 rounded-2xl font-black text-xs sm:text-sm flex items-center gap-1.5 transition shadow-sm cursor-pointer">
           <i class="fas fa-home text-amber-600 dark:text-amber-400"></i> <span class="hidden sm:inline">الرئيسية</span>
         </button>
-        <button type="button" onclick="window.showSection('learn')" id="nav-learn" class="nav-btn hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 px-3 sm:px-4 py-2 rounded-2xl font-black flex items-center gap-2 transition cursor-pointer">
+        <button type="button" onclick="window.playSound('pop'); window.showSection('learn')" id="nav-learn" class="nav-btn hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 px-2.5 sm:px-4 py-2 rounded-2xl font-black text-xs sm:text-sm flex items-center gap-1.5 transition cursor-pointer">
           <i class="fas fa-book-open text-blue-500 dark:text-blue-400"></i> <span class="hidden sm:inline">تعلم</span>
         </button>
-        <button type="button" onclick="window.showSection('quiz')" id="nav-quiz" class="nav-btn hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 px-3 sm:px-4 py-2 rounded-2xl font-black flex items-center gap-2 transition cursor-pointer">
+        <button type="button" onclick="window.playSound('pop'); window.showSection('quiz')" id="nav-quiz" class="nav-btn hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 px-2.5 sm:px-4 py-2 rounded-2xl font-black text-xs sm:text-sm flex items-center gap-1.5 transition cursor-pointer">
           <i class="fas fa-gamepad text-purple-500 dark:text-purple-400"></i> <span class="hidden sm:inline">الاختبار</span>
         </button>
       </nav>
 
-      <!-- Score & Dark Mode Toggle -->
-      <div class="flex items-center gap-2">
-        <!-- Dark Mode Button -->
-        <button type="button" onclick="window.toggleDarkMode()" id="theme-toggle-btn" title="تبديل الوضع الليلي" class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border-2 border-slate-200 dark:border-slate-700 w-10 h-10 rounded-2xl flex items-center justify-center text-lg transition cursor-pointer shadow-sm">
+      <!-- Sound, Dark Mode & Score -->
+      <div class="flex items-center gap-1 sm:gap-2 shrink-0">
+        <button type="button" onclick="window.toggleSound()" id="sound-toggle-btn" title="تشغيل/كتم الصوت" class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border-2 border-slate-200 dark:border-slate-700 w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center text-sm sm:text-lg transition cursor-pointer shadow-sm">
+          <i id="sound-icon" class="fas fa-volume-up text-emerald-600 dark:text-emerald-400"></i>
+        </button>
+
+        <button type="button" onclick="window.playSound('pop'); window.toggleDarkMode()" id="theme-toggle-btn" title="تبديل الوضع الليلي" class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border-2 border-slate-200 dark:border-slate-700 w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center text-sm sm:text-lg transition cursor-pointer shadow-sm">
           <i id="theme-icon" class="fas fa-moon text-indigo-600"></i>
         </button>
 
-        <!-- Score Badge -->
-        <div class="bg-amber-100 dark:bg-amber-500/20 border-2 border-amber-300 dark:border-amber-500/50 px-3 py-1.5 rounded-2xl flex items-center gap-1.5 shadow-sm pulse-glow">
-          <i class="fas fa-star text-amber-500 text-lg sm:text-xl"></i>
-          <span id="global-stars" class="font-black text-base sm:text-lg text-amber-800 dark:text-amber-300">0</span>
+        <div class="bg-amber-100 dark:bg-amber-500/20 border-2 border-amber-300 dark:border-amber-500/50 px-2.5 sm:px-3 py-1.5 rounded-2xl flex items-center gap-1 shadow-sm pulse-glow">
+          <i class="fas fa-star text-amber-500 text-sm sm:text-xl"></i>
+          <span id="global-stars" class="font-black text-sm sm:text-lg text-amber-800 dark:text-amber-300">0</span>
         </div>
       </div>
     </div>
   </header>
 
   <!-- Main Content Container -->
-  <main class="max-w-4xl mx-auto px-4 py-6 flex-1 w-full relative z-10 space-y-6">
+  <main class="max-w-4xl mx-auto px-3 sm:px-4 py-4 sm:py-6 flex-1 w-full relative z-10 space-y-4 sm:space-y-6">
 
     <!-- 1. HOME SECTION -->
-    <section id="sec-home" class="space-y-6">
-      <!-- Welcome Hero Banner -->
-      <div class="bg-gradient-to-r from-sky-400 via-indigo-500 to-purple-600 dark:from-sky-700 dark:via-indigo-800 dark:to-purple-900 text-white rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden flex flex-col sm:flex-row items-center justify-between gap-6 border-4 border-white/50 dark:border-slate-700/80">
-        <div class="space-y-4 z-10 text-center sm:text-right">
-          <span class="bg-white/30 text-white text-xs font-black px-4 py-1.5 rounded-full inline-block shadow-sm">مرحباً بكم يا أبطال مع ميس سيدة! 👋</span>
-          <h2 class="text-3xl sm:text-5xl font-black leading-tight drop-shadow-md">جاهزون نتعلم الحروف ونلعب سوا؟</h2>
-          <p class="text-blue-50 font-bold max-w-md text-sm sm:text-base">استكشف الحروف العربية، تعرف على الكلمات والصور، واختبر مهاراتك في لعبة الصور الممتعة!</p>
-          <div class="flex flex-wrap gap-3 justify-center sm:justify-start pt-2">
-            <button type="button" onclick="window.showSection('quiz')" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-black px-7 py-3.5 rounded-2xl shadow-xl transition transform active:scale-95 flex items-center gap-2 text-lg border-2 border-amber-200 cursor-pointer">
+    <section id="sec-home" class="space-y-4 sm:space-y-6">
+      <div class="bg-gradient-to-r from-sky-400 via-indigo-500 to-purple-600 dark:from-sky-700 dark:via-indigo-800 dark:to-purple-900 text-white rounded-3xl p-5 sm:p-8 shadow-2xl relative overflow-hidden flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 border-4 border-white/50 dark:border-slate-700/80">
+        <div class="space-y-3 sm:space-y-4 z-10 text-center sm:text-right">
+          <span class="bg-white/35 text-white text-[11px] sm:text-xs font-black px-3.5 py-1 rounded-full inline-block shadow-sm">اهلا بيكم يا أبطال مع ميس سيدة 👋</span>
+          <h2 class="text-2xl sm:text-4xl md:text-5xl font-black leading-tight drop-shadow-md">جاهزين نتعلم الحروف العربية والإنجليزية ونلعب سوا؟</h2>
+          <p class="text-blue-50 font-bold max-w-md text-xs sm:text-base">استكشف الحروف، اسمع صوت الطفل الناطق، واختبر مهاراتك في لعبة الصور الممتعة</p>
+          <div class="flex flex-wrap gap-2.5 justify-center sm:justify-start pt-1">
+            <button type="button" onclick="window.playSound('pop'); window.showSection('quiz')" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-black px-5 sm:px-7 py-3 rounded-2xl shadow-xl transition transform active:scale-95 flex items-center gap-2 text-sm sm:text-lg border-2 border-amber-200 cursor-pointer">
               <i class="fas fa-play"></i> ابدأ الاختبار الآن
             </button>
-            <button type="button" onclick="window.showSection('learn')" class="bg-white/20 hover:bg-white/30 text-white font-black px-6 py-3.5 rounded-2xl transition flex items-center gap-2 border-2 border-white/30 cursor-pointer">
+            <button type="button" onclick="window.playSound('pop'); window.showSection('learn')" class="bg-white/20 hover:bg-white/30 text-white font-black px-4 sm:px-6 py-3 rounded-2xl transition flex items-center gap-2 text-sm sm:text-base border-2 border-white/30 cursor-pointer">
               <i class="fas fa-book-reader"></i> جدول الحروف
             </button>
           </div>
         </div>
-        <div class="text-8xl sm:text-9xl z-10 pulse-glow float-2">
-          👩‍🏫
+        <div class="text-6xl sm:text-8xl md:text-9xl z-10 pulse-glow float-2">
+          👶🎤
         </div>
       </div>
 
       <!-- Miss Sida Interactive Greeting Card -->
-      <div class="bg-white/95 dark:bg-slate-800/95 p-6 rounded-3xl shadow-md border-2 border-amber-300 dark:border-amber-500/40 flex flex-col sm:flex-row items-center gap-4 text-center sm:text-right transition-colors">
-        <div class="text-5xl bg-amber-100 dark:bg-amber-500/20 p-3 rounded-2xl shadow-inner">🍎</div>
+      <div class="bg-white/95 dark:bg-slate-800/95 p-4 sm:p-6 rounded-3xl shadow-md border-2 border-amber-300 dark:border-amber-500/40 flex flex-col sm:flex-row items-center gap-3 sm:gap-4 text-center sm:text-right transition-colors">
+        <div class="text-4xl sm:text-5xl bg-amber-100 dark:bg-amber-500/20 p-2.5 sm:p-3 rounded-2xl shadow-inner">🍎</div>
         <div class="flex-1">
-          <h3 class="text-lg font-black text-amber-700 dark:text-amber-400">رسالة ميس سيدة لكم اليوم:</h3>
-          <p id="miss-sida-msg" class="text-slate-600 dark:text-slate-300 font-bold mt-1 text-sm sm:text-base">"أهلاً بيكم يا شطار في عالم الحروف! اختاروا الحرف أو ادخلوا الاختبار وريوني شطارتكم!"</p>
+          <h3 class="text-base sm:text-lg font-black text-amber-700 dark:text-amber-400">رسايل من ميس سيدة ليكم ياابطال:</h3>
+          <p id="miss-sida-msg" class="text-slate-600 dark:text-slate-300 font-bold mt-1 text-xs sm:text-base">"أهلاً بيكم يا شطار في عالم الحروف , اختاروا الحرف واسمعوا صوت البطل الصغير"</p>
         </div>
-        <button type="button" onclick="window.changeMissSidaMessage()" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-black px-5 py-3 rounded-2xl shadow transition flex items-center gap-2 text-sm cursor-pointer">
+        <button type="button" onclick="window.playSound('pop'); window.changeMissSidaMessage()" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-black px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl shadow transition flex items-center gap-2 text-xs sm:text-sm cursor-pointer shrink-0">
           <i class="fas fa-heart text-red-500"></i> تشجيع جديد
         </button>
       </div>
 
       <!-- Stats Cards Container -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="bg-white/95 dark:bg-slate-800/95 p-5 rounded-3xl shadow-md border-2 border-amber-100 dark:border-slate-700 flex items-center gap-4 transition-colors">
-          <div class="w-14 h-14 bg-amber-100 dark:bg-amber-500/20 text-amber-500 rounded-2xl flex items-center justify-center text-3xl">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+        <div class="bg-white/95 dark:bg-slate-800/95 p-4 sm:p-5 rounded-3xl shadow-md border-2 border-amber-100 dark:border-slate-700 flex items-center gap-3 sm:gap-4 transition-colors">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 bg-amber-100 dark:bg-amber-500/20 text-amber-500 rounded-2xl flex items-center justify-center text-2xl sm:text-3xl shrink-0">
             <i class="fas fa-trophy"></i>
           </div>
           <div>
-            <p class="text-xs text-slate-400 font-bold">النجوم المكتسبة</p>
-            <p id="stat-stars" class="text-3xl font-black text-amber-600 dark:text-amber-400">0</p>
+            <p class="text-[11px] sm:text-xs text-slate-400 font-bold">النجوم المكتسبة</p>
+            <p id="stat-stars" class="text-2xl sm:text-3xl font-black text-amber-600 dark:text-amber-400">0</p>
           </div>
         </div>
 
-        <div class="bg-white/95 dark:bg-slate-800/95 p-5 rounded-3xl shadow-md border-2 border-green-100 dark:border-slate-700 flex items-center gap-4 transition-colors">
-          <div class="w-14 h-14 bg-green-100 dark:bg-green-500/20 text-green-500 rounded-2xl flex items-center justify-center text-3xl">
+        <div class="bg-white/95 dark:bg-slate-800/95 p-4 sm:p-5 rounded-3xl shadow-md border-2 border-green-100 dark:border-slate-700 flex items-center gap-3 sm:gap-4 transition-colors">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 bg-green-100 dark:bg-green-500/20 text-green-500 rounded-2xl flex items-center justify-center text-2xl sm:text-3xl shrink-0">
             <i class="fas fa-check-circle"></i>
           </div>
           <div>
-            <p class="text-xs text-slate-400 font-bold">إجابات صحيحة</p>
-            <p id="stat-correct" class="text-3xl font-black text-green-600 dark:text-green-400">0</p>
+            <p class="text-[11px] sm:text-xs text-slate-400 font-bold">إجابات صحيحة</p>
+            <p id="stat-correct" class="text-2xl sm:text-3xl font-black text-green-600 dark:text-green-400">0</p>
           </div>
         </div>
 
-        <div class="bg-white/95 dark:bg-slate-800/95 p-5 rounded-3xl shadow-md border-2 border-purple-100 dark:border-slate-700 flex items-center gap-4 transition-colors">
-          <div class="w-14 h-14 bg-purple-100 dark:bg-purple-500/20 text-purple-500 rounded-2xl flex items-center justify-center text-3xl">
+        <div class="bg-white/95 dark:bg-slate-800/95 p-4 sm:p-5 rounded-3xl shadow-md border-2 border-purple-100 dark:border-slate-700 flex items-center gap-3 sm:gap-4 transition-colors">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 bg-purple-100 dark:bg-purple-500/20 text-purple-500 rounded-2xl flex items-center justify-center text-2xl sm:text-3xl shrink-0">
             <i class="fas fa-crown"></i>
           </div>
           <div>
-            <p class="text-xs text-slate-400 font-bold">المستوى الحالي</p>
-            <p id="stat-level" class="text-xl font-black text-purple-600 dark:text-purple-400">مبتدئ 🌟</p>
+            <p class="text-[11px] sm:text-xs text-slate-400 font-bold">المستوى الحالي</p>
+            <p id="stat-level" class="text-lg sm:text-xl font-black text-purple-600 dark:text-purple-400">مبتدئ 🌟</p>
           </div>
         </div>
       </div>
 
-      <!-- Quick Letters Grid Preview -->
-      <div class="bg-white/95 dark:bg-slate-800/95 p-6 rounded-3xl shadow-md border-2 border-slate-100 dark:border-slate-700 transition-colors">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-lg font-black text-slate-700 dark:text-slate-200 flex items-center gap-2">
-            <i class="fas fa-shapes text-amber-500"></i> الحروف العربية (اضغط على الحرف لتظهر كلمته)
+      <!-- Quick Letters Grid Preview (Arabic Home) -->
+      <div class="bg-white/95 dark:bg-slate-800/95 p-4 sm:p-6 rounded-3xl shadow-md border-2 border-slate-100 dark:border-slate-700 transition-colors">
+        <div class="flex items-center justify-between mb-3 sm:mb-4">
+          <h3 class="text-sm sm:text-lg font-black text-slate-700 dark:text-slate-200 flex items-center gap-2">
+            <i class="fas fa-volume-up text-amber-500"></i> اضغط على الحرف لسماع صوت الطفل
           </h3>
         </div>
-        <!-- Live Preview Box when clicking a letter in Home -->
-        <div id="home-letter-preview" class="hidden mb-4 bg-amber-50 dark:bg-slate-700/80 border-2 border-amber-300 dark:border-amber-500/50 rounded-2xl p-4 flex items-center justify-center gap-4">
-          <span id="preview-icon" class="text-5xl">🐇</span>
+        <div id="home-letter-preview" class="hidden mb-4 bg-amber-50 dark:bg-slate-700/80 border-2 border-amber-300 dark:border-amber-500/50 rounded-2xl p-3 sm:p-4 flex items-center justify-center gap-3 sm:gap-4 cursor-pointer" onclick="window.replayPreviewSpeech()">
+          <span id="preview-icon" class="text-4xl sm:text-5xl">🐇</span>
           <div class="text-right">
-            <span id="preview-letter" class="text-2xl font-black text-amber-600 dark:text-amber-400">أ</span>
-            <p id="preview-word" class="text-xl font-black text-slate-800 dark:text-white">أرنب</p>
+            <span id="preview-letter" class="text-xl sm:text-2xl font-black text-amber-600 dark:text-amber-400">أ</span>
+            <p id="preview-word" class="text-lg sm:text-xl font-black text-slate-800 dark:text-white">أرنب</p>
           </div>
+          <span class="bg-amber-400 text-slate-900 w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center shadow">
+            <i class="fas fa-volume-up"></i>
+          </span>
         </div>
-        <div id="quick-letters-grid" class="grid grid-cols-7 sm:grid-cols-9 gap-2.5">
+        <div id="quick-letters-grid" class="grid grid-cols-6 xs:grid-cols-7 sm:grid-cols-9 gap-2">
           <!-- Populated by JS -->
         </div>
       </div>
     </section>
 
     <!-- 2. LEARN SECTION -->
-    <section id="sec-learn" class="hidden space-y-6">
-      <div class="text-center space-y-2">
-        <h2 class="text-3xl font-black text-slate-800 dark:text-white">قاموس الحروف مع ميس سيدة 📚</h2>
-        <p class="text-slate-500 dark:text-slate-400 text-sm font-bold">تصفح كل الحروف العربية وتعرف على الكلمة والصورة الخاصة بكل حرف!</p>
+    <section id="sec-learn" class="hidden space-y-4 sm:space-y-6">
+      <div class="text-center space-y-2.5 sm:space-y-3">
+        <h2 class="text-2xl sm:text-3xl font-black text-slate-800 dark:text-white">قاموس الحروف  🧒🔊</h2>
+        <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-bold">اختر نوع الحروف للاستماع:</p>
+        
+        <div class="flex justify-center gap-2.5 sm:gap-3 pt-1">
+          <button type="button" onclick="window.playSound('pop'); window.setLearnLang('ar')" id="btn-lang-ar" class="bg-amber-400 text-slate-900 px-4 sm:px-6 py-2.5 rounded-2xl font-black text-xs sm:text-base shadow transition cursor-pointer">
+            AR الحروف العربية
+          </button>
+          <button type="button" onclick="window.playSound('pop'); window.setLearnLang('en')" id="btn-lang-en" class="bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-4 sm:px-6 py-2.5 rounded-2xl font-black text-xs sm:text-base shadow transition cursor-pointer border-2 border-slate-200 dark:border-slate-600">
+            EN الحروف الإنجليزية
+          </button>
+        </div>
       </div>
 
-      <!-- Full Alphabet Cards Grid -->
-      <div id="alphabet-full-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div id="alphabet-full-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
         <!-- Populated by JS -->
       </div>
     </section>
 
     <!-- 3. QUIZ SECTION -->
-    <section id="sec-quiz" class="hidden space-y-6">
-      <!-- Quiz Header/Progress Bar -->
-      <div class="bg-white/95 dark:bg-slate-800/95 p-4 rounded-3xl shadow-md border-2 border-slate-100 dark:border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4 transition-colors">
-        <div class="flex items-center gap-3 w-full sm:w-auto">
-          <span class="bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 font-black px-4 py-1.5 rounded-2xl text-sm shadow-sm" id="question-number">السؤال 1 من 5</span>
-          <div class="w-full sm:w-48 bg-slate-100 dark:bg-slate-700 h-4 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-600">
+    <section id="sec-quiz" class="hidden space-y-4 sm:space-y-6">
+      <div class="bg-white/95 dark:bg-slate-800/95 p-3.5 sm:p-4 rounded-3xl shadow-md border-2 border-slate-100 dark:border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 transition-colors">
+        <div class="flex items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
+          <span class="bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 font-black px-3.5 py-1.5 rounded-2xl text-xs sm:text-sm shadow-sm" id="question-number">السؤال 1 من 5</span>
+          <div class="w-full sm:w-48 bg-slate-100 dark:bg-slate-700 h-3.5 sm:h-4 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-600">
             <div id="quiz-progress" class="bg-gradient-to-r from-blue-400 to-indigo-500 h-full w-0 rounded-full transition-all duration-300"></div>
           </div>
         </div>
-        <div class="text-sm font-black text-amber-600 dark:text-amber-400">
-          ميس سيدة تشجعك! 🌟
+        
+        <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-start">
+          <span class="text-xs font-bold text-slate-500 dark:text-slate-400">نوع الاختبار:</span>
+          <select id="quiz-lang-select" onchange="window.playSound('pop'); window.changeQuizLang(this.value)" class="bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-white font-black px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-600 outline-none cursor-pointer text-xs sm:text-sm">
+            <option value="ar">العربية AR</option>
+            <option value="en">الإنجليزية EN</option>
+          </select>
         </div>
       </div>
 
-      <!-- Question Card Container -->
-      <div class="bg-white dark:bg-slate-800 p-6 sm:p-10 rounded-3xl shadow-xl border-4 border-amber-200 dark:border-amber-500/40 text-center space-y-6 relative overflow-hidden transition-colors">
-        <!-- Target Letter Header -->
-        <div class="inline-block">
-          <p class="text-slate-500 dark:text-slate-300 font-black mb-3 text-lg">ما هي الصورة/الكلمة التي تبدأ بحرف:</p>
-          <div id="target-letter-display" class="w-28 h-28 sm:w-32 sm:h-32 bg-gradient-to-tr from-amber-400 to-yellow-300 text-white rounded-3xl font-black text-6xl sm:text-7xl flex items-center justify-center shadow-xl mx-auto transform -rotate-3 border-4 border-white dark:border-slate-700 pulse-glow">
+      <div class="bg-white dark:bg-slate-800 p-5 sm:p-10 rounded-3xl shadow-xl border-4 border-amber-200 dark:border-amber-500/40 text-center space-y-4 sm:space-y-6 relative overflow-hidden transition-colors">
+        <div class="inline-block w-full">
+          <p class="text-slate-500 dark:text-slate-300 font-black mb-2 sm:mb-3 text-base sm:text-lg" id="quiz-prompt-text">ما هي الصورة/الكلمة التي تبدأ بحرف:</p>
+          <div onclick="window.speakCurrentQuizLetter()" title="اضغط لسماع صوت الطفل" id="target-letter-display" class="w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-tr from-amber-400 to-yellow-300 text-white rounded-3xl font-black text-5xl sm:text-7xl flex items-center justify-center shadow-xl mx-auto transform -rotate-3 border-4 border-white dark:border-slate-700 pulse-glow cursor-pointer">
             أ
           </div>
+          <p class="text-[11px] sm:text-xs font-bold text-amber-600 dark:text-amber-400 mt-2">اضغط على الحرف لسماع صوت الطفل 🧒🔊</p>
         </div>
 
-        <!-- Options Grid -->
-        <div id="options-container" class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+        <div id="options-container" class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 pt-1">
           <!-- Populated by JS -->
         </div>
 
-        <!-- Feedback Alert Container -->
-        <div id="feedback-message" class="hidden p-4 rounded-2xl font-black text-lg flex items-center justify-center gap-2 transition"></div>
+        <div id="feedback-message" class="hidden p-3.5 sm:p-4 rounded-2xl font-black text-base sm:text-lg flex items-center justify-center gap-2 transition"></div>
       </div>
     </section>
 
     <!-- 4. QUIZ RESULT SECTION -->
     <section id="sec-result" class="hidden space-y-6 text-center">
-      <div class="bg-white dark:bg-slate-800 p-8 sm:p-10 rounded-3xl shadow-2xl border-4 border-amber-200 dark:border-amber-500/40 space-y-6 max-w-lg mx-auto transition-colors">
-        <div class="text-8xl float-2">🎉</div>
-        <h2 class="text-3xl sm:text-4xl font-black text-slate-800 dark:text-white">برافو عليك يا بطل! ميس سيدة فخورة بيك!</h2>
-        <p class="text-slate-600 dark:text-slate-300 font-bold text-lg">لقد أكملت مجموعة الاختبار بنجاح!</p>
+      <div class="bg-white dark:bg-slate-800 p-6 sm:p-10 rounded-3xl shadow-2xl border-4 border-amber-200 dark:border-amber-500/40 space-y-5 sm:space-y-6 max-w-lg mx-auto transition-colors">
+        <div class="text-7xl sm:text-8xl float-2">🎉</div>
+        <h2 class="text-2xl sm:text-4xl font-black text-slate-800 dark:text-white">برافو عليك يا بطل! ميس سيدة فخورة بيك!</h2>
+        <p class="text-slate-600 dark:text-slate-300 font-bold text-base sm:text-lg">لقد أكملت مجموعة الاختبار بنجاح!</p>
         
-        <div class="bg-amber-50 dark:bg-slate-700/80 p-6 rounded-3xl border-2 border-amber-200 dark:border-amber-500/40 flex justify-around shadow-inner">
+        <div class="bg-amber-50 dark:bg-slate-700/80 p-5 sm:p-6 rounded-3xl border-2 border-amber-200 dark:border-amber-500/40 flex justify-around shadow-inner">
           <div>
-            <p class="text-xs text-amber-600 dark:text-amber-400 font-bold">النقاط المكتسبة</p>
-            <p id="result-score" class="text-3xl font-black text-amber-700 dark:text-amber-300">+30</p>
+            <p class="text-[11px] sm:text-xs text-amber-600 dark:text-amber-400 font-bold">النقاط المكتسبة</p>
+            <p id="result-score" class="text-2xl sm:text-3xl font-black text-amber-700 dark:text-amber-300">+30</p>
           </div>
           <div>
-            <p class="text-xs text-amber-600 dark:text-amber-400 font-bold">إجمالي النجوم</p>
-            <p id="result-total-stars" class="text-3xl font-black text-amber-700 dark:text-amber-300">0</p>
+            <p class="text-[11px] sm:text-xs text-amber-600 dark:text-amber-400 font-bold">إجمالي النجوم</p>
+            <p id="result-total-stars" class="text-2xl sm:text-3xl font-black text-amber-700 dark:text-amber-300">0</p>
           </div>
         </div>
 
-        <button type="button" onclick="window.startQuiz(); window.showSection('quiz');" class="w-full bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-amber-300 hover:to-yellow-300 text-slate-900 font-black py-4 rounded-2xl shadow-xl transition transform active:scale-95 text-lg flex items-center justify-center gap-2 border-2 border-amber-200 cursor-pointer">
+        <button type="button" onclick="window.playSound('pop'); window.startQuiz(); window.showSection('quiz');" class="w-full bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-amber-300 hover:to-yellow-300 text-slate-900 font-black py-3.5 sm:py-4 rounded-2xl shadow-xl transition transform active:scale-95 text-base sm:text-lg flex items-center justify-center gap-2 border-2 border-amber-200 cursor-pointer">
           <i class="fas fa-rotate-right"></i> اللعب مرة أخرى
         </button>
       </div>
@@ -276,8 +311,7 @@
 
   </main>
 
-  <!-- Footer -->
-  <footer class="text-center text-slate-500 dark:text-slate-400 text-xs font-bold py-4 relative z-10">
+  <footer class="text-center text-slate-500 dark:text-slate-400 text-[11px] sm:text-xs font-bold py-4 relative z-10">
     صُنع بكل حب للأطفال الصغار ❤️ عالم الحروف مع ميس سيدة 2026
   </footer>
 
@@ -286,39 +320,203 @@
 
   <!-- SCRIPT LOGIC -->
   <script>
-    const alphabetData = [
-      { letter: 'أ', word: 'أرنب', icon: '🐇', distractors: [{ word: 'بطة', icon: '🦆' }, { word: 'كلب', icon: '🐕' }] },
-      { letter: 'ب', word: 'بطة', icon: '🦆', distractors: [{ word: 'تفاحة', icon: '🍎' }, { word: 'أسد', icon: '🦁' }] },
-      { letter: 'ت', word: 'تفاحة', icon: '🍎', distractors: [{ word: 'ثعلب', icon: '🦊' }, { word: 'بطة', icon: '🦆' }] },
-      { letter: 'ث', word: 'ثعلب', icon: '🦊', distractors: [{ word: 'جمل', icon: '🐪' }, { word: 'أرنب', icon: '🐇' }] },
-      { letter: 'ج', word: 'جمل', icon: '🐪', distractors: [{ word: 'حصان', icon: '🐎' }, { word: 'تفاحة', icon: '🍎' }] },
-      { letter: 'ح', word: 'حصان', icon: '🐎', distractors: [{ word: 'خروف', icon: '🐑' }, { word: 'بطة', icon: '🦆' }] },
-      { letter: 'خ', word: 'خروف', icon: '🐑', distractors: [{ word: 'ديك', icon: '🐓' }, { word: 'ثعلب', icon: '🦊' }] },
-      { letter: 'د', word: 'ديك', icon: '🐓', distractors: [{ word: 'ذئب', icon: '🐺' }, { word: 'تفاحة', icon: '🍎' }] },
-      { letter: 'ذ', word: 'ذئب', icon: '🐺', distractors: [{ word: 'رمان', icon: '🍎' }, { word: 'أسد', icon: '🦁' }] },
-      { letter: 'ر', word: 'رمان', icon: '🍎', distractors: [{ word: 'زرافة', icon: '🦒' }, { word: 'بطة', icon: '🦆' }] },
-      { letter: 'ز', word: 'زرافة', icon: '🦒', distractors: [{ word: 'سمكة', icon: '🐟' }, { word: 'ديك', icon: '🐓' }] },
-      { letter: 'س', word: 'سمكة', icon: '🐟', distractors: [{ word: 'شمس', icon: '☀️' }, { word: 'حصان', icon: '🐎' }] },
-      { letter: 'ش', word: 'شمس', icon: '☀️', distractors: [{ word: 'صقر', icon: '🦅' }, { word: 'ثعلب', icon: '🦊' }] },
-      { letter: 'ص', word: 'صقر', icon: '🦅', distractors: [{ word: 'ضفدع', icon: '🐸' }, { word: 'تفاحة', icon: '🍎' }] },
-      { letter: 'ض', word: 'ضفدع', icon: '🐸', distractors: [{ word: 'طائرة', icon: '✈️' }, { word: 'أسد', icon: '🦁' }] },
-      { letter: 'ط', word: 'طائرة', icon: '✈️', distractors: [{ word: 'ظرف', icon: '✉️' }, { word: 'بطة', icon: '🦆' }] },
-      { letter: 'ظ', word: 'ظرف', icon: '✉️', distractors: [{ word: 'عين', icon: '👁️' }, { word: 'ديك', icon: '🐓' }] },
-      { letter: 'ع', word: 'عصفور', icon: '🐦', distractors: [{ word: 'غزالة', icon: '🦌' }, { word: 'سمكة', icon: '🐟' }] },
-      { letter: 'غ', word: 'غزالة', icon: '🦌', distractors: [{ word: 'فيل', icon: '🐘' }, { word: 'حصان', icon: '🐎' }] },
-      { letter: 'ف', word: 'فيل', icon: '🐘', distractors: [{ word: 'قرد', icon: '🐒' }, { word: 'رمان', icon: '🍎' }] },
-      { letter: 'ق', word: 'قرد', icon: '🐒', distractors: [{ word: 'كلب', icon: '🐕' }, { word: 'شمس', icon: '☀️' }] },
-      { letter: 'ك', word: 'كلب', icon: '🐕', distractors: [{ word: 'ليمون', icon: '🍋' }, { word: 'زرافة', icon: '🦒' }] },
-      { letter: 'ل', word: 'ليمون', icon: '🍋', distractors: [{ word: 'موز', icon: '🍌' }, { word: 'عصفور', icon: '🐦' }] },
-      { letter: 'م', word: 'موز', icon: '🍌', distractors: [{ word: 'نحلة', icon: '🐝' }, { word: 'طائرة', icon: '✈️' }] },
-      { letter: 'ن', word: 'نحلة', icon: '🐝', distractors: [{ word: 'هلال', icon: '🌙' }, { word: 'فيل', icon: '🐘' }] },
-      { letter: 'هـ', word: 'هلال', icon: '🌙', distractors: [{ word: 'وردة', icon: '🌹' }, { word: 'ضفدع', icon: '🐸' }] },
-      { letter: 'و', word: 'وردة', icon: '🌹', distractors: [{ word: 'يد', icon: '✋' }, { word: 'قرد', icon: '🐒' }] },
-      { letter: 'ي', word: 'يد', icon: '✋', distractors: [{ word: 'أرنب', icon: '🐇' }, { word: 'تفاحة', icon: '🍎' }] }
+    // ==========================================
+    // 1. SOUND EFFECTS & CHILD SPEECH ENGINE
+    // ==========================================
+    let soundEnabled = true;
+    try {
+      if (localStorage.getItem('letter_sound_enabled') === '0') {
+        soundEnabled = false;
+      }
+    } catch (e) {}
+
+    let audioCtx = null;
+    function getAudioContext() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) audioCtx = new AudioContext();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    window.playSound = function(type) {
+      if (!soundEnabled) return;
+      const ctx = getAudioContext();
+      if (!ctx) return;
+
+      const now = ctx.currentTime;
+
+      if (type === 'pop') {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(520, now);
+        osc.frequency.exponentialRampToValueAtTime(880, now + 0.08);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.08);
+      } 
+      else if (type === 'correct') {
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + i * 0.09);
+          gain.gain.setValueAtTime(0.2, now + i * 0.09);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.09 + 0.35);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + i * 0.09);
+          osc.stop(now + i * 0.09 + 0.35);
+        });
+      } 
+      else if (type === 'wrong') {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(240, now);
+        osc.frequency.linearRampToValueAtTime(160, now + 0.28);
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.28);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.28);
+      } 
+      else if (type === 'win') {
+        const notes = [523.25, 659.25, 783.99, 1046.50, 783.99, 1046.50];
+        const times = [0, 0.12, 0.24, 0.36, 0.52, 0.68];
+        notes.forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + times[i]);
+          gain.gain.setValueAtTime(0.22, now + times[i]);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + times[i] + 0.4);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + times[i]);
+          osc.stop(now + times[i] + 0.4);
+        });
+      }
+    };
+
+    // Child Voice Text-to-Speech Engine
+    window.speakLetterAndWord = function(letter, word, lang) {
+      window.playSound('pop');
+      if (!soundEnabled || !('speechSynthesis' in window)) return;
+
+      window.speechSynthesis.cancel();
+      const text = lang === 'ar' ? `${letter} ... ${word}` : `${letter} ... ${word}`;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = lang === 'ar' ? 'ar-SA' : 'en-US';
+      
+      utterance.rate = 1.0; 
+      utterance.pitch = 1.7; 
+      
+      const voices = window.speechSynthesis.getVoices();
+      const preferredVoice = voices.find(v => v.lang.startsWith(lang === 'ar' ? 'ar' : 'en') && (v.name.toLowerCase().includes('child') || v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('zira') || v.name.toLowerCase().includes('salma')));
+      if (preferredVoice) {
+        utterance.voice = preferredVoice;
+      }
+
+      window.speechSynthesis.speak(utterance);
+    };
+
+    window.toggleSound = function() {
+      soundEnabled = !soundEnabled;
+      const iconEl = document.getElementById('sound-icon');
+      if (soundEnabled) {
+        iconEl.className = 'fas fa-volume-up text-emerald-600 dark:text-emerald-400';
+        window.playSound('pop');
+      } else {
+        iconEl.className = 'fas fa-volume-mute text-slate-400';
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      }
+      try {
+        localStorage.setItem('letter_sound_enabled', soundEnabled ? '1' : '0');
+      } catch (e) {}
+    };
+
+    (function initSoundIcon() {
+      if (!soundEnabled) {
+        const iconEl = document.getElementById('sound-icon');
+        if (iconEl) iconEl.className = 'fas fa-volume-mute text-slate-400';
+      }
+    })();
+
+    // ==========================================
+    // 2. ALPHABET DATASETS
+    // ==========================================
+    const arabicAlphabet = [
+      { letter: 'أ', speakLetter: 'ألف', word: 'أرنب', icon: '🐇', distractors: [{ word: 'بطة', icon: '🦆' }, { word: 'كلب', icon: '🐕' }] },
+      { letter: 'ب', speakLetter: 'باء', word: 'بطة', icon: '🦆', distractors: [{ word: 'تفاحة', icon: '🍎' }, { word: 'أسد', icon: '🦁' }] },
+      { letter: 'ت', speakLetter: 'تاء', word: 'تفاحة', icon: '🍎', distractors: [{ word: 'ثعلب', icon: '🦊' }, { word: 'بطة', icon: '🦆' }] },
+      { letter: 'ث', speakLetter: 'ثاء', word: 'ثعلب', icon: '🦊', distractors: [{ word: 'جمل', icon: '🐪' }, { word: 'أرنب', icon: '🐇' }] },
+      { letter: 'ج', speakLetter: 'جيم', word: 'جمل', icon: '🐪', distractors: [{ word: 'حصان', icon: '🐎' }, { word: 'تفاحة', icon: '🍎' }] },
+      { letter: 'ح', speakLetter: 'حاء', word: 'حصان', icon: '🐎', distractors: [{ word: 'خروف', icon: '🐑' }, { word: 'بطة', icon: '🦆' }] },
+      { letter: 'خ', speakLetter: 'خاء', word: 'خروف', icon: '🐑', distractors: [{ word: 'ديك', icon: '🐓' }, { word: 'ثعلب', icon: '🦊' }] },
+      { letter: 'د', speakLetter: 'دال', word: 'ديك', icon: '🐓', distractors: [{ word: 'ذئب', icon: '🐺' }, { word: 'تفاحة', icon: '🍎' }] },
+      { letter: 'ذ', speakLetter: 'ذال', word: 'ذئب', icon: '🐺', distractors: [{ word: 'رمان', icon: '🍎' }, { word: 'أسد', icon: '🦁' }] },
+      { letter: 'ر', speakLetter: 'راء', word: 'رمان', icon: '🍎', distractors: [{ word: 'زرافة', icon: '🦒' }, { word: 'بطة', icon: '🦆' }] },
+      { letter: 'ز', speakLetter: 'زاي', word: 'زرافة', icon: '🦒', distractors: [{ word: 'سمكة', icon: '🐟' }, { word: 'ديك', icon: '🐓' }] },
+      { letter: 'س', speakLetter: 'سين', word: 'سمكة', icon: '🐟', distractors: [{ word: 'شمس', icon: '☀️' }, { word: 'حصان', icon: '🐎' }] },
+      { letter: 'ش', speakLetter: 'شين', word: 'شمس', icon: '☀️', distractors: [{ word: 'صقر', icon: '🦅' }, { word: 'ثعلب', icon: '🦊' }] },
+      { letter: 'ص', speakLetter: 'صاد', word: 'صقر', icon: '🦅', distractors: [{ word: 'ضفدع', icon: '🐸' }, { word: 'تفاحة', icon: '🍎' }] },
+      { letter: 'ض', speakLetter: 'ضاد', word: 'ضفدع', icon: '🐸', distractors: [{ word: 'طائرة', icon: '✈️' }, { word: 'أسد', icon: '🦁' }] },
+      { letter: 'ط', speakLetter: 'طاء', word: 'طائرة', icon: '✈️', distractors: [{ word: 'ظرف', icon: '✉️' }, { word: 'بطة', icon: '🦆' }] },
+      { letter: 'ظ', speakLetter: 'ظاء', word: 'ظرف', icon: '✉️', distractors: [{ word: 'عين', icon: '👁️' }, { word: 'ديك', icon: '🐓' }] },
+      { letter: 'ع', speakLetter: 'عين', word: 'عصفور', icon: '🐦', distractors: [{ word: 'غزالة', icon: '🦌' }, { word: 'سمكة', icon: '🐟' }] },
+      { letter: 'غ', speakLetter: 'غين', word: 'غزالة', icon: '🦌', distractors: [{ word: 'فيل', icon: '🐘' }, { word: 'حصان', icon: '🐎' }] },
+      { letter: 'ف', speakLetter: 'فاء', word: 'فيل', icon: '🐘', distractors: [{ word: 'قرد', icon: '🐒' }, { word: 'رمان', icon: '🍎' }] },
+      { letter: 'ق', speakLetter: 'قاف', word: 'قرد', icon: '🐒', distractors: [{ word: 'كلب', icon: '🐕' }, { word: 'شمس', icon: '☀️' }] },
+      { letter: 'ك', speakLetter: 'كاف', word: 'كلب', icon: '🐕', distractors: [{ word: 'ليمون', icon: '🍋' }, { word: 'زرافة', icon: '🦒' }] },
+      { letter: 'ل', speakLetter: 'لام', word: 'ليمون', icon: '🍋', distractors: [{ word: 'موز', icon: '🍌' }, { word: 'عصفور', icon: '🐦' }] },
+      { letter: 'م', speakLetter: 'ميم', word: 'موز', icon: '🍌', distractors: [{ word: 'نحلة', icon: '🐝' }, { word: 'طائرة', icon: '✈️' }] },
+      { letter: 'ن', speakLetter: 'نون', word: 'نحلة', icon: '🐝', distractors: [{ word: 'هلال', icon: '🌙' }, { word: 'فيل', icon: '🐘' }] },
+      { letter: 'هـ', speakLetter: 'هاء', word: 'هلال', icon: '🌙', distractors: [{ word: 'وردة', icon: '🌹' }, { word: 'ضفدع', icon: '🐸' }] },
+      { letter: 'و', speakLetter: 'واو', word: 'وردة', icon: '🌹', distractors: [{ word: 'يد', icon: '✋' }, { word: 'قرد', icon: '🐒' }] },
+      { letter: 'ي', speakLetter: 'ياء', word: 'يد', icon: '✋', distractors: [{ word: 'أرنب', icon: '🐇' }, { word: 'تفاحة', icon: '🍎' }] }
+    ];
+
+    const englishAlphabet = [
+      { letter: 'A', speakLetter: 'A', word: 'Apple', icon: '🍎', distractors: [{ word: 'Ball', icon: '⚽' }, { word: 'Cat', icon: '🐱' }] },
+      { letter: 'B', speakLetter: 'B', word: 'Ball', icon: '⚽', distractors: [{ word: 'Apple', icon: '🍎' }, { word: 'Dog', icon: '🐶' }] },
+      { letter: 'C', speakLetter: 'C', word: 'Cat', icon: '🐱', distractors: [{ word: 'Fish', icon: '🐟' }, { word: 'Ball', icon: '⚽' }] },
+      { letter: 'D', speakLetter: 'D', word: 'Dog', icon: '🐶', distractors: [{ word: 'Elephant', icon: '🐘' }, { word: 'Apple', icon: '🍎' }] },
+      { letter: 'E', speakLetter: 'E', word: 'Elephant', icon: '🐘', distractors: [{ word: 'Frog', icon: '🐸' }, { word: 'Cat', icon: '🐱' }] },
+      { letter: 'F', speakLetter: 'F', word: 'Fish', icon: '🐟', distractors: [{ word: 'Giraffe', icon: '🦒' }, { word: 'Dog', icon: '🐶' }] },
+      { letter: 'G', speakLetter: 'G', word: 'Giraffe', icon: '🦒', distractors: [{ word: 'Hat', icon: '👒' }, { word: 'Elephant', icon: '🐘' }] },
+      { letter: 'H', speakLetter: 'H', word: 'Hat', icon: '👒', distractors: [{ word: 'Ice cream', icon: '🍦' }, { word: 'Fish', icon: '🐟' }] },
+      { letter: 'I', speakLetter: 'I', word: 'Ice cream', icon: '🍦', distractors: [{ word: 'Jacket', icon: '🧥' }, { word: 'Giraffe', icon: '🦒' }] },
+      { letter: 'J', speakLetter: 'J', word: 'Jacket', icon: '🧥', distractors: [{ word: 'Kite', icon: '🪁' }, { word: 'Hat', icon: '👒' }] },
+      { letter: 'K', speakLetter: 'K', word: 'Kite', icon: '🪁', distractors: [{ word: 'Lion', icon: '🦁' }, { word: 'Ice cream', icon: '🍦' }] },
+      { letter: 'L', speakLetter: 'L', word: 'Lion', icon: '🦁', distractors: [{ word: 'Monkey', icon: '🐒' }, { word: 'Jacket', icon: '🧥' }] },
+      { letter: 'M', speakLetter: 'M', word: 'Monkey', icon: '🐒', distractors: [{ word: 'Nest', icon: '🪺' }, { word: 'Kite', icon: '🪁' }] },
+      { letter: 'N', speakLetter: 'N', word: 'Nest', icon: '🪺', distractors: [{ word: 'Orange', icon: '🍊' }, { word: 'Lion', icon: '🦁' }] },
+      { letter: 'O', speakLetter: 'O', word: 'Orange', icon: '🍊', distractors: [{ word: 'Pen', icon: '🖊️' }, { word: 'Monkey', icon: '🐒' }] },
+      { letter: 'P', speakLetter: 'P', word: 'Pen', icon: '🖊️', distractors: [{ word: 'Queen', icon: '👑' }, { word: 'Nest', icon: '🪺' }] },
+      { letter: 'Q', speakLetter: 'Q', word: 'Queen', icon: '👑', distractors: [{ word: 'Rabbit', icon: '🐇' }, { word: 'Orange', icon: '🍊' }] },
+      { letter: 'R', speakLetter: 'R', word: 'Rabbit', icon: '🐇', distractors: [{ word: 'Sun', icon: '☀️' }, { word: 'Pen', icon: '🖊️' }] },
+      { letter: 'S', speakLetter: 'S', word: 'Sun', icon: '☀️', distractors: [{ word: 'Tree', icon: '🌳' }, { word: 'Queen', icon: '👑' }] },
+      { letter: 'T', speakLetter: 'T', word: 'Tree', icon: '🌳', distractors: [{ word: 'Umbrella', icon: '☂️' }, { word: 'Rabbit', icon: '🐇' }] },
+      { letter: 'U', speakLetter: 'U', word: 'Umbrella', icon: '☂️', distractors: [{ word: 'Van', icon: '🚐' }, { word: 'Sun', icon: '☀️' }] },
+      { letter: 'V', speakLetter: 'V', word: 'Van', icon: '🚐', distractors: [{ word: 'Watch', icon: '⌚' }, { word: 'Tree', icon: '🌳' }] },
+      { letter: 'W', speakLetter: 'W', word: 'Watch', icon: '⌚', distractors: [{ word: 'Xylophone', icon: '🎹' }, { word: 'Umbrella', icon: '☂️' }] },
+      { letter: 'X', speakLetter: 'X', word: 'Xylophone', icon: '🎹', distractors: [{ word: 'Yoyo', icon: '🪀' }, { word: 'Van', icon: '🚐' }] },
+      { letter: 'Y', speakLetter: 'Y', word: 'Yoyo', icon: '🪀', distractors: [{ word: 'Zebra', icon: '🦓' }, { word: 'Watch', icon: '⌚' }] },
+      { letter: 'Z', speakLetter: 'Z', word: 'Zebra', icon: '🦓', distractors: [{ word: 'Apple', icon: '🍎' }, { word: 'Cat', icon: '🐱' }] }
     ];
 
     const missSidaMessages = [
-      '"أهلاً بيكم يا شطار في عالم الحروف! اختاروا الحرف أو ادخلوا الاختبار وريوني شطارتكم!"',
+      '"أهلاً بيكم يا شطار في عالم الحروف العربية والإنجليزية! اختاروا الحرف واسمعوا صوت البطل الصغير!"',
       '"كل نجمة بتجمعوها بتقربكم من لقب بطل الحروف! يلا نلعب!"',
       '"ميس سيدة فخورة جداً بكل بطل بيذاكر الحروف وبيجاوب صح!"',
       '"لو غلطت في سؤال مفيش مشكلة، حاول تاني وهتوصل للصح!"'
@@ -334,6 +532,10 @@
       userStats.correct = parseInt(localStorage.getItem('letter_correct') || '0');
     } catch (e) {}
 
+    let currentLearnLang = 'ar';
+    let currentQuizLang = 'ar';
+    let currentPreviewItem = null;
+
     let quizState = {
       currentQuestions: [],
       currentIndex: 0,
@@ -341,7 +543,18 @@
       isAnswered: false
     };
 
-    // Dark Mode Toggle Function
+    window.chooseInitialLang = function(lang) {
+      window.playSound('correct');
+      const modal = document.getElementById('welcome-modal');
+      if (modal) modal.classList.add('hidden');
+      
+      currentLearnLang = lang;
+      currentQuizLang = lang;
+      window.setLearnLang(lang);
+      window.changeQuizLang(lang);
+      window.showSection('learn');
+    };
+
     window.toggleDarkMode = function() {
       const htmlEl = document.documentElement;
       const isDark = htmlEl.classList.toggle('dark');
@@ -358,7 +571,6 @@
       } catch (e) {}
     };
 
-    // Apply saved Dark Mode on load
     (function initTheme() {
       try {
         if (localStorage.getItem('letter_dark_mode') === '1') {
@@ -402,6 +614,28 @@
       }
     };
 
+    window.setLearnLang = function(lang) {
+      currentLearnLang = lang;
+      const btnAr = document.getElementById('btn-lang-ar');
+      const btnEn = document.getElementById('btn-lang-en');
+
+      if (lang === 'ar') {
+        btnAr.className = "bg-amber-400 text-slate-900 px-4 sm:px-6 py-2.5 rounded-2xl font-black text-xs sm:text-base shadow transition cursor-pointer";
+        btnEn.className = "bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-4 sm:px-6 py-2.5 rounded-2xl font-black text-xs sm:text-base shadow transition cursor-pointer border-2 border-slate-200 dark:border-slate-600";
+      } else {
+        btnEn.className = "bg-amber-400 text-slate-900 px-4 sm:px-6 py-2.5 rounded-2xl font-black text-xs sm:text-base shadow transition cursor-pointer";
+        btnAr.className = "bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-4 sm:px-6 py-2.5 rounded-2xl font-black text-xs sm:text-base shadow transition cursor-pointer border-2 border-slate-200 dark:border-slate-600";
+      }
+      renderLearnSection();
+    };
+
+    window.changeQuizLang = function(lang) {
+      currentQuizLang = lang;
+      const selectEl = document.getElementById('quiz-lang-select');
+      if (selectEl) selectEl.value = lang;
+      window.startQuiz();
+    };
+
     function updateStatsUI() {
       document.getElementById('global-stars').textContent = userStats.stars;
       document.getElementById('stat-stars').textContent = userStats.stars;
@@ -420,21 +654,29 @@
       } catch (e) {}
     }
 
+    window.replayPreviewSpeech = function() {
+      if (currentPreviewItem) {
+        window.speakLetterAndWord(currentPreviewItem.speakLetter, currentPreviewItem.word, 'ar');
+      }
+    };
+
     function renderHomeGrid() {
       const container = document.getElementById('quick-letters-grid');
       if (!container) return;
       container.innerHTML = '';
-      alphabetData.forEach(item => {
+      arabicAlphabet.forEach(item => {
         const btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = "bg-white dark:bg-slate-700 hover:bg-amber-100 dark:hover:bg-amber-500/30 border-2 border-slate-200 dark:border-slate-600 hover:border-amber-400 text-slate-800 dark:text-white font-black rounded-2xl p-2.5 text-center text-lg card-bounce transition shadow-sm";
+        btn.className = "bg-white dark:bg-slate-700 hover:bg-amber-100 dark:hover:bg-amber-500/30 border-2 border-slate-200 dark:border-slate-600 hover:border-amber-400 text-slate-800 dark:text-white font-black rounded-2xl p-2 sm:p-2.5 text-center text-base sm:text-lg card-bounce transition shadow-sm";
         btn.textContent = item.letter;
         btn.addEventListener('click', () => {
+          currentPreviewItem = item;
           const previewBox = document.getElementById('home-letter-preview');
           previewBox.classList.remove('hidden');
           document.getElementById('preview-icon').textContent = item.icon;
           document.getElementById('preview-letter').textContent = `حرف ${item.letter}`;
           document.getElementById('preview-word').textContent = item.word;
+          window.speakLetterAndWord(item.speakLetter, item.word, 'ar');
         });
         container.appendChild(btn);
       });
@@ -444,22 +686,38 @@
       const container = document.getElementById('alphabet-full-grid');
       if (!container) return;
       container.innerHTML = '';
-      alphabetData.forEach(item => {
+      
+      const dataset = currentLearnLang === 'ar' ? arabicAlphabet : englishAlphabet;
+
+      dataset.forEach(item => {
         const card = document.createElement('div');
-        card.className = "bg-white dark:bg-slate-800 p-5 rounded-3xl border-2 border-slate-100 dark:border-slate-700 shadow-md hover:border-amber-400 dark:hover:border-amber-400 card-bounce flex flex-col items-center gap-3";
+        card.className = "bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-3xl border-2 border-slate-100 dark:border-slate-700 shadow-md hover:border-amber-400 dark:hover:border-amber-400 card-bounce flex flex-col items-center gap-2 sm:gap-3 relative group";
         card.innerHTML = `
-          <div class="w-14 h-14 bg-gradient-to-tr from-amber-400 to-yellow-300 text-white font-black text-2xl rounded-2xl flex items-center justify-center shadow-lg">
+          <span class="absolute top-2.5 left-2.5 text-slate-400 group-hover:text-amber-500 transition text-xs sm:text-sm">
+            <i class="fas fa-volume-up"></i>
+          </span>
+          <div class="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-tr from-amber-400 to-yellow-300 text-white font-black text-xl sm:text-2xl rounded-2xl flex items-center justify-center shadow-lg">
             ${item.letter}
           </div>
-          <div class="text-5xl my-1 float-1">${item.icon}</div>
-          <p class="font-black text-slate-700 dark:text-slate-200 text-xl">${item.word}</p>
+          <div class="text-4xl sm:text-5xl my-1 float-1">${item.icon}</div>
+          <p class="font-black text-slate-700 dark:text-slate-200 text-lg sm:text-xl">${item.word}</p>
         `;
+        card.addEventListener('click', () => {
+          window.speakLetterAndWord(item.speakLetter, item.word, currentLearnLang);
+        });
         container.appendChild(card);
       });
     }
 
+    window.speakCurrentQuizLetter = function() {
+      const current = quizState.currentQuestions[quizState.currentIndex];
+      if (!current) return;
+      window.speakLetterAndWord(current.speakLetter, '', currentQuizLang);
+    };
+
     window.startQuiz = function() {
-      const shuffled = [...alphabetData].sort(() => 0.5 - Math.random());
+      const dataset = currentQuizLang === 'ar' ? arabicAlphabet : englishAlphabet;
+      const shuffled = [...dataset].sort(() => 0.5 - Math.random());
       quizState.currentQuestions = shuffled.slice(0, 5);
       quizState.currentIndex = 0;
       quizState.score = 0;
@@ -473,6 +731,9 @@
       document.getElementById('question-number').textContent = `السؤال ${quizState.currentIndex + 1} من 5`;
       document.getElementById('quiz-progress').style.width = `${((quizState.currentIndex) / 5) * 100}%`;
       document.getElementById('target-letter-display').textContent = current.letter;
+
+      const promptText = currentQuizLang === 'ar' ? 'ما هي الصورة/الكلمة التي تبدأ بحرف:' : 'What is the word/image that starts with letter:';
+      document.getElementById('quiz-prompt-text').textContent = promptText;
 
       const feedback = document.getElementById('feedback-message');
       feedback.className = 'hidden';
@@ -489,10 +750,10 @@
       options.forEach(opt => {
         const btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = "bg-white dark:bg-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600 border-2 border-slate-200 dark:border-slate-600 p-6 rounded-3xl card-bounce flex flex-col items-center gap-3 transition w-full shadow-sm";
+        btn.className = "bg-white dark:bg-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600 border-2 border-slate-200 dark:border-slate-600 p-4 sm:p-6 rounded-3xl card-bounce flex flex-col items-center gap-2 sm:gap-3 transition w-full shadow-sm";
         btn.innerHTML = `
-          <span class="text-6xl float-1">${opt.icon}</span>
-          <span class="text-2xl font-black text-slate-700 dark:text-white">${opt.word}</span>
+          <span class="text-5xl sm:text-6xl float-1">${opt.icon}</span>
+          <span class="text-xl sm:text-2xl font-black text-slate-700 dark:text-white">${opt.word}</span>
         `;
         btn.addEventListener('click', () => handleAnswer(opt, btn));
         optionsContainer.appendChild(btn);
@@ -507,11 +768,12 @@
       feedback.classList.remove('hidden');
 
       if (selectedOpt.isCorrect) {
+        window.playSound('correct');
         buttonEl.classList.remove('bg-white', 'dark:bg-slate-700', 'border-slate-200', 'dark:border-slate-600');
         buttonEl.classList.add('bg-green-100', 'dark:bg-green-900/60', 'border-green-500', 'text-green-800', 'dark:text-green-200');
 
-        feedback.className = "p-4 rounded-2xl font-black text-lg flex items-center justify-center gap-2 bg-green-100 dark:bg-green-900/60 text-green-700 dark:text-green-200 border-2 border-green-300 dark:border-green-600 shadow-sm";
-        feedback.innerHTML = `<i class="fas fa-check-circle text-2xl"></i> برافو! ميس سيدة تقول إجابة صحيحة 🎉`;
+        feedback.className = "p-3.5 sm:p-4 rounded-2xl font-black text-base sm:text-lg flex items-center justify-center gap-2 bg-green-100 dark:bg-green-900/60 text-green-700 dark:text-green-200 border-2 border-green-300 dark:border-green-600 shadow-sm";
+        feedback.innerHTML = `<i class="fas fa-check-circle text-xl sm:text-2xl"></i> برافو! ميس سيدة تقول إجابة صحيحة 🎉`;
 
         quizState.score += 10;
         userStats.stars += 2;
@@ -522,11 +784,12 @@
           confetti({ particleCount: 60, spread: 70, origin: { y: 0.7 } });
         }
       } else {
+        window.playSound('wrong');
         buttonEl.classList.remove('bg-white', 'dark:bg-slate-700', 'border-slate-200', 'dark:border-slate-600');
         buttonEl.classList.add('bg-red-100', 'dark:bg-red-900/60', 'border-red-400', 'text-red-800', 'dark:text-red-200');
 
-        feedback.className = "p-4 rounded-2xl font-black text-lg flex items-center justify-center gap-2 bg-red-100 dark:bg-red-900/60 text-red-700 dark:text-red-200 border-2 border-red-300 dark:border-red-600 shadow-sm";
-        feedback.innerHTML = `<i class="fas fa-times-circle text-2xl"></i> معلش يا بطل، حاول مرة كمان! 👏`;
+        feedback.className = "p-3.5 sm:p-4 rounded-2xl font-black text-base sm:text-lg flex items-center justify-center gap-2 bg-red-100 dark:bg-red-900/60 text-red-700 dark:text-red-200 border-2 border-red-300 dark:border-red-600 shadow-sm";
+        feedback.innerHTML = `<i class="fas fa-times-circle text-xl sm:text-2xl"></i> معلش يا بطل، حاول مرة كمان! 👏`;
       }
 
       setTimeout(() => {
@@ -540,6 +803,7 @@
     }
 
     function finishQuiz() {
+      window.playSound('win');
       window.showSection('result');
       document.getElementById('result-score').textContent = `+${quizState.score}`;
       document.getElementById('result-total-stars').textContent = userStats.stars;
